@@ -1,4 +1,4 @@
-package com.example.news;
+package com.example.news.presentation.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.news.R;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView rvActualNews;
