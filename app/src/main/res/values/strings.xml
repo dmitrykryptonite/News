@@ -3,4 +3,5 @@
     <string name="search">Search</string>
     <string name="button_search_news">Button: search news</string>
     <string name="search_latest_news">Search Latest News...</string>
+    <string name="button_open_favorite_news">Button: open favorite news</string>
 </resources>
