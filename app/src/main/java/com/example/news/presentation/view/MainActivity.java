@@ -1,6 +1,5 @@
 package com.example.news.presentation.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -11,8 +10,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.news.R;
+import com.example.news.presentation.presenters.MainPresenter;
 
-public class MainActivity extends AppCompatActivity {
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
+
+public class MainActivity extends MvpAppCompatActivity {
+    @InjectPresenter
+    MainPresenter presenter;
     private RecyclerView rvActualNews;
     private SwipeRefreshLayout swipeRefresherLayout;
     private ImageButton btnSearch, btnCloseSearchView, btnFavoriteNews;

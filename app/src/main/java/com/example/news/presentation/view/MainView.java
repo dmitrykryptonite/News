@@ -1,4 +1,6 @@
 package com.example.news.presentation.view;
 
-public interface MainView {
+import moxy.MvpView;
+
+public interface MainView extends MvpView {
 }

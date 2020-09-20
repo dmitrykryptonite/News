@@ -1,4 +1,11 @@
 package com.example.news.presentation.presenters;
 
-public class MainPresenter {
+import com.example.news.presentation.view.MainView;
+
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
+
+@InjectViewState
+public class MainPresenter extends MvpPresenter<MainView> {
+
 }
