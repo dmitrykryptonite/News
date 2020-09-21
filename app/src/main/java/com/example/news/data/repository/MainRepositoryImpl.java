@@ -1,4 +1,4 @@
-package com.example.news.data.repositories;
+package com.example.news.data.repository;
 
 import com.example.news.domain.MainRepository;
 

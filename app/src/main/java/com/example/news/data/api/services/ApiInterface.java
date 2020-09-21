@@ -1,6 +1,6 @@
 package com.example.news.data.api.services;
 
-import com.example.news.entities.ApiNews;
+import com.example.news.entities.data.ApiNews;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

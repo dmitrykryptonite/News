@@ -1,4 +1,4 @@
-package com.example.news.entities;
+package com.example.news.entities.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

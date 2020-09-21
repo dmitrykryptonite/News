@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.news.R;
-import com.example.news.presentation.presenters.MainPresenter;
+import com.example.news.presentation.presenter.MainPresenter;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;

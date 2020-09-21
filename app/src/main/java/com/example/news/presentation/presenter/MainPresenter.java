@@ -1,4 +1,4 @@
-package com.example.news.presentation.presenters;
+package com.example.news.presentation.presenter;
 
 import com.example.news.presentation.view.MainView;
 
