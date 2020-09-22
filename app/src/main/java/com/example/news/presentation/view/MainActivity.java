@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 
 import com.example.news.R;
 import com.example.news.entities.data.ApiArticle;
+import com.example.news.navigation.Router;
 import com.example.news.presentation.presenter.MainPresenter;
 import com.example.news.presentation.ui.adapters.ListActualNewsRecyclerViewAdapter;
 
@@ -71,6 +72,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         });
         presenter.getNews(API_KEY);
         swipeRefresherLayout.setOnRefreshListener(() -> presenter.getNews(API_KEY));
+        Router router = new Router(this);
+        presenter.setRouter(router);
     }
 
     @Override
@@ -142,6 +145,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void editTextSearchSetText(String query) {
         etSearch.setText(query);
+    }
+
+    @Override
+    public void openDetailScreen() {
+        presenter.openDetailScreen();
     }
 
     @Override

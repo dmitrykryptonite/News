@@ -84,6 +84,7 @@ public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<List
         holder.tvPublishedAt.setText(Utils.DateFormat(apiArticle.getPublishedAt()));
         holder.tvSource.setText(apiArticle.getSource().getName());
         holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(apiArticle.getPublishedAt())));
+        cardView.setOnClickListener(v -> mainActivity.openDetailScreen());
     }
 
     @Override

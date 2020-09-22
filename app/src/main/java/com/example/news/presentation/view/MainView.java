@@ -40,5 +40,8 @@ public interface MainView extends MvpView {
     void editTextSearchSetText(String query);
 
     @StateStrategyType(SkipStrategy.class)
+    void openDetailScreen();
+
+    @StateStrategyType(SkipStrategy.class)
     void finishActivity();
 }

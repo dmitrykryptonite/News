@@ -1,6 +1,7 @@
 package com.example.news.presentation.presenter;
 
 import com.example.news.domain.MainInteractorImpl;
+import com.example.news.navigation.Router;
 import com.example.news.presentation.view.MainView;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private boolean isSearchingMode = false;
     private Disposable disposableGetNews, disposableGetNewsSearch;
     private List<String> searchHistory = new ArrayList<>();
+    private Router router;
 
     public void onBtnSearchClicked() {
         isSearchingMode = true;
@@ -40,7 +42,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
             isSearchingMode = false;
             getViewState().showPanel(isSearchingMode);
         }
-
     }
 
     public void onImeActionSearchClicked() {
@@ -90,6 +91,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
                 });
+    }
+
+    public void setRouter(Router router) {
+        this.router = router;
+    }
+
+    public void openDetailScreen() {
+        router.openDetailScreen();
     }
 
     public void onPauseView() {
