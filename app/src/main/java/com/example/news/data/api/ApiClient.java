@@ -11,7 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static final String BASE_URL = "http://newsapi.org/v2/";
+    private static ApiClient instance;
     private static Retrofit retrofit;
+
+    public static ApiClient getInstance() {
+        if (instance == null)
+            instance = new ApiClient();
+        return instance;
+    }
 
     public static Retrofit getApiClient() {
         if (retrofit == null) {

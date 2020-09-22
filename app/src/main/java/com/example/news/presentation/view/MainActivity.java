@@ -15,18 +15,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.news.R;
+import com.example.news.entities.data.ApiArticle;
 import com.example.news.presentation.presenter.MainPresenter;
+import com.example.news.presentation.ui.adapters.ListActualNewsRecyclerViewAdapter;
+
+import java.util.List;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
+    public static final String API_KEY = "2fbec356e9104ecab368633bea1dd01c";
     @InjectPresenter
     MainPresenter presenter;
-    private RecyclerView rvActualNews;
     private SwipeRefreshLayout swipeRefresherLayout;
     private ImageButton btnSearch, btnCloseSearchView, btnFavoriteNews;
     private EditText etSearch;
+    private RecyclerView rvActualNews;
+    private ListActualNewsRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +41,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         rvActualNews = findViewById(R.id.rvActualNews);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvActualNews.setLayoutManager(llm);
+        adapter = new ListActualNewsRecyclerViewAdapter(this);
+        rvActualNews.setAdapter(adapter);
         rvActualNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                presenter.onScrollStateChanged();
+                presenter.onScrollStateChanged(etSearch.getText().toString());
             }
         });
         swipeRefresherLayout = findViewById(R.id.swipeRefresherLayout);
@@ -52,10 +60,22 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         etSearch = findViewById(R.id.etSearch);
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String query = etSearch.getText().toString();
+                presenter.getNewsSearch(query, API_KEY);
                 presenter.onImeActionSearchClicked();
+                presenter.searchHistoryAddItem(query);
+                swipeRefresherLayout.setOnRefreshListener(() ->
+                        presenter.getNewsSearch(query, API_KEY));
             }
             return false;
         });
+        presenter.getNews(API_KEY);
+        swipeRefresherLayout.setOnRefreshListener(() -> presenter.getNews(API_KEY));
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.onBackPressed(API_KEY);
     }
 
     @Override
@@ -105,6 +125,31 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
+    public void updateActualNewsList(List<ApiArticle> apiArticles) {
+        adapter.updateActualNewsList(apiArticles);
+    }
+
+    @Override
+    public void stopRefreshing() {
+        swipeRefresherLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void recyclerViewMovingToStartPosition() {
+        rvActualNews.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void editTextSearchSetText(String query) {
+        etSearch.setText(query);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         presenter.onPauseView();
@@ -113,6 +158,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResumeView();
+        String query = etSearch.getText().toString();
+        presenter.onResumeView(query, API_KEY);
     }
 }
