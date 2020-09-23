@@ -34,6 +34,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     private EditText etSearch;
     private RecyclerView rvActualNews;
     private ListActualNewsRecyclerViewAdapter adapter;
+    private int lastFirstVisiblePosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +139,20 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void recyclerViewMovingToStartPosition() {
+    public void recyclerViewMovingScrollToStartPosition() {
         rvActualNews.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void recyclerViewSavedScrollPosition() {
+        assert rvActualNews.getLayoutManager() != null;
+        lastFirstVisiblePosition = ((LinearLayoutManager) rvActualNews.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void recyclerViewRestoreScrollPosition() {
+        assert rvActualNews.getLayoutManager() != null;
+        rvActualNews.getLayoutManager().scrollToPosition(lastFirstVisiblePosition);
     }
 
     @Override
@@ -160,13 +173,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.onPauseView();
+        String query = etSearch.getText().toString();
+        presenter.onPauseView(query);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        String query = etSearch.getText().toString();
-        presenter.onResumeView(query, API_KEY);
+        presenter.onResumeView(API_KEY);
     }
 }

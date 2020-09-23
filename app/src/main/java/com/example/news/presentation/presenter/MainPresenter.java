@@ -47,6 +47,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public void onImeActionSearchClicked() {
         getViewState().editTextSearchClearFocus();
         getViewState().hideKeyboard();
+        getViewState().recyclerViewMovingScrollToStartPosition();
     }
 
     public void searchHistoryAddItem(String query) {
@@ -58,12 +59,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
             final String query = searchHistory.get(searchHistory.size() - 2);
             getNewsSearch(query, apiKey);
             getViewState().editTextSearchSetText(query);
+            getViewState().recyclerViewMovingScrollToStartPosition();
             searchHistory.remove(searchHistory.size() - 1);
         } else if (searchHistory.size() == 1) {
             getNews(apiKey);
             getViewState().editTextSearchSetText("");
             isSearchingMode = false;
             getViewState().showPanel(isSearchingMode);
+            getViewState().recyclerViewMovingScrollToStartPosition();
             searchHistory.remove(searchHistory.size() - 1);
         } else {
             searchHistory.size();
@@ -76,7 +79,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiNews -> {
-                    getViewState().recyclerViewMovingToStartPosition();
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
                 });
@@ -87,7 +89,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiNews -> {
-                    getViewState().recyclerViewMovingToStartPosition();
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
                 });
@@ -101,17 +102,25 @@ public class MainPresenter extends MvpPresenter<MainView> {
         router.openDetailScreen();
     }
 
-    public void onPauseView() {
+    public void onPauseView(String query) {
+        getViewState().recyclerViewSavedScrollPosition();
         getViewState().editTextSearchClearFocus();
         getViewState().hideKeyboard();
+        if (query.length() == 0) {
+            isSearchingMode = false;
+            getViewState().showPanel(isSearchingMode);
+        }
     }
 
-    public void onResumeView(String query, String apiKey) {
+    public void onResumeView(String apiKey) {
         getViewState().showPanel(isSearchingMode);
-        if (query.length() >= 1)
+        if (searchHistory.size() >= 1) {
+            String query = searchHistory.get(searchHistory.size() - 1);
             getNewsSearch(query, apiKey);
-        else
+        } else {
             getNews(apiKey);
+        }
+        getViewState().recyclerViewRestoreScrollPosition();
     }
 
     @Override
