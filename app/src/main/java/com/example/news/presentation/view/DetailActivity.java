@@ -30,7 +30,6 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
     private FrameLayout dateBehavior;
     private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
     private ImageView imgBackdrop;
-    private ImageView imgShare;
     private ImageView imgAddToFavorite;
     private WebView webView;
 
@@ -64,6 +63,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
         presenter.setRouter(router);
         ImageView imgOpenInBrowser = findViewById(R.id.imgOpenInBrowser);
         imgOpenInBrowser.setOnClickListener(v -> presenter.onBtnOpenInBrowserClicked());
+        ImageView imgShare = findViewById(R.id.imgShare);
+        imgShare.setOnClickListener(v -> presenter.onBtnShareClicked());
     }
 
     @Override

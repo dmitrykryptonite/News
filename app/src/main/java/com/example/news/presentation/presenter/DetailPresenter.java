@@ -45,6 +45,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
         this.router = router;
     }
 
+    public void onBtnShareClicked() {
+        router.shareNews(apiArticle.getSource().getName(), apiArticle.getTitle(), apiArticle.getUrl());
+    }
+
     public void onBtnOpenInBrowserClicked() {
         router.openNewsInBrowser(apiArticle.getUrl());
     }

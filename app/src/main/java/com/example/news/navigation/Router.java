@@ -23,4 +23,13 @@ public class Router {
         intent.setData(Uri.parse(url));
         activity.startActivity(intent);
     }
+
+    public void shareNews(String source, String title, String url) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plan");
+        intent.putExtra(Intent.EXTRA_SUBJECT, source);
+        String body = title + "\n" + url + "\n" + "Share from the news App" + "\n";
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        activity.startActivity(Intent.createChooser(intent, "Share in: "));
+    }
 }
