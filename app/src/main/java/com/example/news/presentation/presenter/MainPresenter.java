@@ -1,6 +1,9 @@
 package com.example.news.presentation.presenter;
 
+import android.util.Log;
+
 import com.example.news.domain.MainInteractorImpl;
+import com.example.news.entities.data.ApiArticle;
 import com.example.news.navigation.Router;
 import com.example.news.presentation.view.MainView;
 
@@ -98,7 +101,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
         this.router = router;
     }
 
-    public void openDetailScreen() {
+    public void openDetailScreen(ApiArticle apiArticle) {
+        mainInteractorImpl.saveApiArticle(apiArticle);
         router.openDetailScreen();
     }
 

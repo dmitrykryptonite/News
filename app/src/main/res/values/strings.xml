@@ -10,4 +10,12 @@
     <string name="desc">Desc</string>
     <string name="source">Source</string>
     <string name="imgView">imgView</string>
+    <string name="title_of_news">Title of News</string>
+    <string name="image_backdrop">Image: backdrop</string>
+    <string name="image_top_shadow">Image: top shadow</string>
+    <string name="image_bot_shadow">Image: bot shadow</string>
+    <string name="image_calendar">Image: calendar</string>
+    <string name="image_add_to_favorite">Image: add to favorite</string>
+    <string name="image_open_news_in_browser">Image: open news in browser</string>
+    <string name="image_share_news">Image: share news</string>
 </resources>

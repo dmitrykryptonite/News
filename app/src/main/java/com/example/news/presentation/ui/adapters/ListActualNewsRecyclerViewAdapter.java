@@ -32,7 +32,6 @@ import java.util.List;
 public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<ListActualNewsRecyclerViewAdapter.ViewHolder> {
     private List<ApiArticle> apiArticles = new ArrayList<>();
     private MainActivity mainActivity;
-    private CardView cardView;
 
     public ListActualNewsRecyclerViewAdapter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -54,7 +53,7 @@ public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<List
 
     @Override
     public void onBindViewHolder(@NonNull ListActualNewsRecyclerViewAdapter.ViewHolder holder, int position) {
-        ApiArticle apiArticle = apiArticles.get(position);
+        final ApiArticle apiArticle = apiArticles.get(position);
         Glide.with(App.getApp())
                 .load(apiArticle.getUrlToImage())
                 .listener(new RequestListener<Drawable>() {
@@ -64,7 +63,7 @@ public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<List
                         FrameLayout.LayoutParams layoutParams =
                                 new FrameLayout.LayoutParams(0, 0);
                         layoutParams.setMargins(0, 0, 0, 0);
-                        cardView.setLayoutParams(layoutParams);
+                        holder.cardView.setLayoutParams(layoutParams);
                         return false;
                     }
 
@@ -84,7 +83,7 @@ public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<List
         holder.tvPublishedAt.setText(Utils.DateFormat(apiArticle.getPublishedAt()));
         holder.tvSource.setText(apiArticle.getSource().getName());
         holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(apiArticle.getPublishedAt())));
-        cardView.setOnClickListener(v -> mainActivity.openDetailScreen());
+        holder.cardView.setOnClickListener(v -> mainActivity.openDetailScreen(apiArticle));
     }
 
     @Override
@@ -92,10 +91,11 @@ public class ListActualNewsRecyclerViewAdapter extends RecyclerView.Adapter<List
         return apiArticles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
         ImageView imgV;
         ProgressBar progressLoadPhoto;
+        CardView cardView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

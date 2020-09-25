@@ -146,7 +146,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void recyclerViewSavedScrollPosition() {
         assert rvActualNews.getLayoutManager() != null;
-        lastFirstVisiblePosition = ((LinearLayoutManager) rvActualNews.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        lastFirstVisiblePosition = ((LinearLayoutManager) rvActualNews.getLayoutManager())
+                .findFirstCompletelyVisibleItemPosition();
     }
 
     @Override
@@ -161,8 +162,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void openDetailScreen() {
-        presenter.openDetailScreen();
+    public void openDetailScreen(ApiArticle apiArticle) {
+        presenter.openDetailScreen(apiArticle);
     }
 
     @Override

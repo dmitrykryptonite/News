@@ -37,7 +37,6 @@ public class ApiArticle {
     @Expose
     private String content;
 
-
     public String getContent() {
         return content;
     }
