@@ -1,15 +1,11 @@
 package com.example.news.presentation.presenter;
 
-import android.util.Log;
-
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.DetailInteractorImpl;
-import com.example.news.entities.data.ApiArticle;
 import com.example.news.presentation.view.DetailView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;

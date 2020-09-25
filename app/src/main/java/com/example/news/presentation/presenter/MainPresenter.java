@@ -1,7 +1,5 @@
 package com.example.news.presentation.presenter;
 
-import android.util.Log;
-
 import com.example.news.domain.MainInteractorImpl;
 import com.example.news.entities.data.ApiArticle;
 import com.example.news.navigation.Router;

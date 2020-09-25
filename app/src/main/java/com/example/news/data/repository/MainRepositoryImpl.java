@@ -10,7 +10,7 @@ import com.example.news.entities.data.ApiNews;
 import io.reactivex.Single;
 
 public class MainRepositoryImpl implements MainRepository {
-    private ApiClient apiClient;
+    private ApiClient apiClient = ApiClient.getInstance();
     private SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance();
     private static MainRepositoryImpl instance;
 
@@ -18,10 +18,6 @@ public class MainRepositoryImpl implements MainRepository {
         if (instance == null)
             instance = new MainRepositoryImpl();
         return instance;
-    }
-
-    public MainRepositoryImpl() {
-        apiClient = ApiClient.getInstance();
     }
 
     @Override
