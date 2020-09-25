@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.news.R;
+import com.example.news.navigation.Router;
 import com.example.news.presentation.presenter.DetailPresenter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -29,7 +30,12 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
     private FrameLayout dateBehavior;
     private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
     private ImageView imgBackdrop;
+    private ImageView imgShare;
+    private ImageView imgAddToFavorite;
     private WebView webView;
+
+    public DetailActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,10 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
         tvTitle = findViewById(R.id.tvTitle);
         imgBackdrop = findViewById(R.id.imgBackdrop);
         webView = findViewById(R.id.webView);
+        Router router = new Router(this);
+        presenter.setRouter(router);
+        ImageView imgOpenInBrowser = findViewById(R.id.imgOpenInBrowser);
+        imgOpenInBrowser.setOnClickListener(v -> presenter.onBtnOpenInBrowserClicked());
     }
 
     @Override

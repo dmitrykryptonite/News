@@ -2,6 +2,8 @@ package com.example.news.presentation.presenter;
 
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.DetailInteractorImpl;
+import com.example.news.entities.data.ApiArticle;
+import com.example.news.navigation.Router;
 import com.example.news.presentation.view.DetailView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,6 +16,8 @@ import moxy.MvpPresenter;
 public class DetailPresenter extends MvpPresenter<DetailView> {
     private DetailInteractorImpl detailInteractorImpl = new DetailInteractorImpl();
     private Disposable disposableGetApiArticle;
+    private Router router;
+    private ApiArticle apiArticle;
 
     @Override
     protected void onFirstViewAttach() {
@@ -22,6 +26,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiArticle -> {
+                    this.apiArticle = apiArticle;
                     getViewState().setTextAppbarTitle(apiArticle.getSource().getName());
                     getViewState().setTextAppbarSubtitle(apiArticle.getUrl());
                     getViewState().setTextTvDate(apiArticle.getPublishedAt());
@@ -34,6 +39,14 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                     getViewState().setUrlToView(apiArticle.getUrl());
                     getViewState().setTextTvTitle(apiArticle.getTitle());
                 });
+    }
+
+    public void setRouter(Router router) {
+        this.router = router;
+    }
+
+    public void onBtnOpenInBrowserClicked() {
+        router.openNewsInBrowser(apiArticle.getUrl());
     }
 
     @Override
