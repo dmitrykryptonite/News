@@ -23,6 +23,9 @@ public interface MainView extends MvpView {
     void editTextSearchRequestFocus();
 
     @StateStrategyType(SkipStrategy.class)
+    void showWarningMassage(String massage);
+
+    @StateStrategyType(SkipStrategy.class)
     void showKeyboardForEditTextSearch();
 
     @StateStrategyType(SkipStrategy.class)

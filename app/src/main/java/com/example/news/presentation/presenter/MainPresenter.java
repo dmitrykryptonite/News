@@ -45,19 +45,41 @@ public class MainPresenter extends MvpPresenter<MainView> {
         }
     }
 
-    public void onImeActionSearchClicked() {
-        getViewState().editTextSearchClearFocus();
-        getViewState().hideKeyboard();
-        getViewState().recyclerViewMovingScrollToStartPosition();
+    public void onImeActionSearchClicked(String query, String apiKey) {
+        if (!query.equals("")) {
+            searchHistory.add(query);
+            getNewsSearch(query, apiKey);
+            getViewState().editTextSearchClearFocus();
+            getViewState().hideKeyboard();
+            getViewState().recyclerViewMovingScrollToStartPosition();
+            if (searchHistory.size() > 1) {
+                String lastQuery = searchHistory.get(searchHistory.size() - 1);
+                String penultimateQuery = searchHistory.get(searchHistory.size() - 2);
+                if (lastQuery.equals(penultimateQuery)) {
+                    searchHistory.remove(searchHistory.size() - 2);
+                }
+            }
+        } else {
+            getViewState().editTextSearchClearFocus();
+            isSearchingMode = false;
+            getViewState().showPanel(isSearchingMode);
+            getViewState().hideKeyboard();
+            getViewState().showWarningMassage("Sorry, query must not be empty");
+        }
     }
 
-    public void searchHistoryAddItem(String query) {
-        searchHistory.add(query);
+    public void swipeRefresherUsed(String apiKey) {
+        if (searchHistory.size() >= 1) {
+            String query = searchHistory.get(searchHistory.size() - 1);
+            getNewsSearch(query, apiKey);
+        } else {
+            getNews(apiKey);
+        }
     }
 
     public void onBackPressed(String apiKey) {
         if (searchHistory.size() > 1) {
-            final String query = searchHistory.get(searchHistory.size() - 2);
+            String query = searchHistory.get(searchHistory.size() - 2);
             getNewsSearch(query, apiKey);
             getViewState().editTextSearchSetText(query);
             getViewState().recyclerViewMovingScrollToStartPosition();
@@ -85,7 +107,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 });
     }
 
-    public void getNewsSearch(String keyword, String apiKey) {
+    private void getNewsSearch(String keyword, String apiKey) {
         disposableGetNewsSearch = mainInteractorImpl.getNewsSearch(keyword, apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -2,6 +2,7 @@ package com.example.news.presentation.view;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -13,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.news.R;
 import com.example.news.entities.data.ApiArticle;
@@ -64,16 +66,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 String query = etSearch.getText().toString();
-                presenter.getNewsSearch(query, API_KEY);
-                presenter.onImeActionSearchClicked();
-                presenter.searchHistoryAddItem(query);
-                swipeRefresherLayout.setOnRefreshListener(() ->
-                        presenter.getNewsSearch(query, API_KEY));
+                presenter.onImeActionSearchClicked(query, API_KEY);
             }
             return false;
         });
         presenter.getNews(API_KEY);
-        swipeRefresherLayout.setOnRefreshListener(() -> presenter.getNews(API_KEY));
+        swipeRefresherLayout.setOnRefreshListener(() -> presenter.swipeRefresherUsed(API_KEY));
         Router router = new Router(this);
         presenter.setRouter(router);
     }
@@ -117,6 +115,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
+    public void showWarningMassage(String massage) {
+        Toast.makeText(this, massage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showKeyboardForEditTextSearch() {
         final Activity activity = MainActivity.this;
         InputMethodManager imm =
@@ -141,7 +144,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void recyclerViewMovingScrollToStartPosition() {
-        rvActualNews.smoothScrollToPosition(0);
+        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(this) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(0);
+        assert rvActualNews.getLayoutManager() != null;
+        rvActualNews.getLayoutManager().startSmoothScroll(smoothScroller);
     }
 
     @Override
