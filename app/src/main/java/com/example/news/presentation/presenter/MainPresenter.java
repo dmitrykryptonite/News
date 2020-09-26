@@ -104,6 +104,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
         router.openDetailScreen();
     }
 
+    public void onBtnFavoriteNewsClicked() {
+        router.openFavoriteScreen();
+    }
+
     public void onPauseView(String query) {
         getViewState().recyclerViewSavedScrollPosition();
         getViewState().editTextSearchClearFocus();

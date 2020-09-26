@@ -30,7 +30,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @InjectPresenter
     MainPresenter presenter;
     private SwipeRefreshLayout swipeRefresherLayout;
-    private ImageButton btnSearch, btnCloseSearchView, btnFavoriteNews;
+    private ImageButton btnSearch, btnCloseSearchView;
     private EditText etSearch;
     private RecyclerView rvActualNews;
     private ListActualNewsRecyclerViewAdapter adapter;
@@ -58,7 +58,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         btnSearch.setOnClickListener(v -> presenter.onBtnSearchClicked());
         btnCloseSearchView = findViewById(R.id.btnCloseSearchView);
         btnCloseSearchView.setOnClickListener(v -> presenter.onBtnCloseSearchViewClicked());
-        btnFavoriteNews = findViewById(R.id.btnFavoriteNews);
+        ImageButton btnFavoriteNews = findViewById(R.id.btnFavoriteNews);
+        btnFavoriteNews.setOnClickListener(v -> presenter.onBtnFavoriteNewsClicked());
         etSearch = findViewById(R.id.etSearch);
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
