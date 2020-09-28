@@ -4,7 +4,7 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.news.presentation.view.FavoriteActivity">
+    tools:context="com.example.news.presentation.view.FavoriteNewsActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarPanel"

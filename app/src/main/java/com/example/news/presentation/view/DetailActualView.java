@@ -4,7 +4,7 @@ import moxy.MvpView;
 import moxy.viewstate.strategy.SkipStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 
-public interface DetailView extends MvpView {
+public interface DetailActualView extends MvpView {
     @StateStrategyType(SkipStrategy.class)
     void setTextAppbarTitle(String strAppbarTitle);
 
@@ -21,8 +21,20 @@ public interface DetailView extends MvpView {
     void setTextTvTitle(String title);
 
     @StateStrategyType(SkipStrategy.class)
-    void setImage(String urlToImage);
+    void setImage(String urlToImage, String imageName);
 
     @StateStrategyType(SkipStrategy.class)
-    void setUrlToView(String url);
+    void setUrlToWebView(String url);
+
+    @StateStrategyType(SkipStrategy.class)
+    void btnAddToFavoriteSetColorYellow();
+
+    @StateStrategyType(SkipStrategy.class)
+    void btnAddToFavoriteSetColorWhite();
+
+    @StateStrategyType(SkipStrategy.class)
+    void showSuccessMassage(String massage);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showErrorMassage(String massage);
 }

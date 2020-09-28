@@ -1,6 +1,10 @@
 package com.example.news.presentation.view;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -8,24 +12,30 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ImageViewCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.news.R;
+import com.example.news.app.App;
 import com.example.news.navigation.Router;
-import com.example.news.presentation.presenter.DetailPresenter;
+import com.example.news.presentation.presenter.DetailActualPresenter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
-public class DetailActivity extends MvpAppCompatActivity implements DetailView,
+public class DetailActualActivity extends MvpAppCompatActivity implements DetailActualView,
         AppBarLayout.OnOffsetChangedListener {
     @InjectPresenter
-    DetailPresenter presenter;
+    DetailActualPresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
     private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
@@ -33,7 +43,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
     private ImageView imgAddToFavorite;
     private WebView webView;
 
-    public DetailActivity() {
+    public DetailActualActivity() {
     }
 
     @Override
@@ -65,6 +75,8 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
         imgOpenInBrowser.setOnClickListener(v -> presenter.onBtnOpenInBrowserClicked());
         ImageView imgShare = findViewById(R.id.imgShare);
         imgShare.setOnClickListener(v -> presenter.onBtnShareClicked());
+        imgAddToFavorite = findViewById(R.id.imgAddToFavorite);
+        imgAddToFavorite.setOnClickListener(v -> presenter.onBtnAddToFavoriteClicked());
     }
 
     @Override
@@ -116,16 +128,28 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
     }
 
     @Override
-    public void setImage(String urlToImage) {
+    public void setImage(String urlToImage, String imageName) {
         Glide.with(this)
+                .asBitmap()
                 .load(urlToImage)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imgBackdrop);
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource,
+                                                @Nullable Transition<? super Bitmap> transition) {
+                        imgBackdrop.setImageBitmap(resource);
+                        presenter.saveImage(resource, imageName);
+                        presenter.setPathToImage(presenter.saveImage(resource, imageName));
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public void setUrlToView(String url) {
+    public void setUrlToWebView(String url) {
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
@@ -135,5 +159,27 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView,
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
+    }
+
+    @Override
+    public void btnAddToFavoriteSetColorYellow() {
+        ImageViewCompat.setImageTintList(imgAddToFavorite,
+                ColorStateList.valueOf(Color.parseColor("#FFF100")));
+    }
+
+    @Override
+    public void btnAddToFavoriteSetColorWhite() {
+        ImageViewCompat.setImageTintList(imgAddToFavorite,
+                ColorStateList.valueOf(Color.parseColor("#FFFFFFFF")));
+    }
+
+    @Override
+    public void showSuccessMassage(String massage) {
+        Toast.makeText(App.getApp(), massage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorMassage(String massage) {
+        Toast.makeText(App.getApp(), massage, Toast.LENGTH_SHORT).show();
     }
 }

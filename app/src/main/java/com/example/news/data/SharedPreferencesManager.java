@@ -1,6 +1,7 @@
 package com.example.news.data;
 
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
 
 import com.example.news.app.App;

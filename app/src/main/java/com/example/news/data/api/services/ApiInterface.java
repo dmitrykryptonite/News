@@ -15,8 +15,8 @@ public interface ApiInterface {
 
     @GET("everything")
     Single<ApiNews> getNewsSearch(@Query("q") String keyword,
-                                @Query("language") String language,
-                                @Query("sortBy") String sortBy,
-                                @Query("apiKey") String apiKey
+                                  @Query("language") String language,
+                                  @Query("sortBy") String sortBy,
+                                  @Query("apiKey") String apiKey
     );
 }

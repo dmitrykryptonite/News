@@ -23,41 +23,41 @@ import com.bumptech.glide.request.target.Target;
 import com.example.news.R;
 import com.example.news.app.App;
 import com.example.news.data.utils.Utils;
-import com.example.news.entities.data.ApiArticle;
-import com.example.news.presentation.view.MainActivity;
+import com.example.news.entities.FavoriteArticle;
+import com.example.news.presentation.view.FavoriteNewsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListActualNewsRecyclerViewAdapter extends
-        RecyclerView.Adapter<ListActualNewsRecyclerViewAdapter.ViewHolder> {
-    private List<ApiArticle> apiArticles = new ArrayList<>();
-    private MainActivity mainActivity;
+public class ListFavoriteNewsRecyclerViewAdapter extends
+        RecyclerView.Adapter<ListFavoriteNewsRecyclerViewAdapter.ViewHolder> {
+    private List<FavoriteArticle> favoriteArticles = new ArrayList<>();
+    private FavoriteNewsActivity favoriteActivity;
 
-    public ListActualNewsRecyclerViewAdapter(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public ListFavoriteNewsRecyclerViewAdapter(FavoriteNewsActivity favoriteActivity) {
+        this.favoriteActivity = favoriteActivity;
     }
 
-    public void updateActualNewsList(List<ApiArticle> apiArticles) {
-        this.apiArticles = apiArticles;
+    public void updateFavoriteNewsList(List<FavoriteArticle> favoriteArticles) {
+        this.favoriteArticles = favoriteArticles;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ListActualNewsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                                           int viewType) {
+    public ListFavoriteNewsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                                             int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_rv_news, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListActualNewsRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull ListFavoriteNewsRecyclerViewAdapter.ViewHolder holder,
                                  int position) {
-        final ApiArticle apiArticle = apiArticles.get(position);
+        final FavoriteArticle favoriteArticle = favoriteArticles.get(position);
         Glide.with(App.getApp())
-                .load(apiArticle.getUrlToImage())
+                .load(favoriteArticle.getPathToImage())
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
@@ -79,18 +79,18 @@ public class ListActualNewsRecyclerViewAdapter extends
                 })
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imgV);
-        holder.tvTitle.setText(apiArticle.getTitle());
-        holder.tvDesc.setText(apiArticle.getDescription());
-        holder.tvAuthor.setText(apiArticle.getAuthor());
-        holder.tvPublishedAt.setText(Utils.DateFormat(apiArticle.getPublishedAt()));
-        holder.tvSource.setText(apiArticle.getSource().getName());
-        holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(apiArticle.getPublishedAt())));
-        holder.cardView.setOnClickListener(v -> mainActivity.openDetailScreen(apiArticle));
+        holder.tvTitle.setText(favoriteArticle.getTitle());
+        holder.tvDesc.setText(favoriteArticle.getDescription());
+        holder.tvAuthor.setText(favoriteArticle.getAuthor());
+        holder.tvPublishedAt.setText(Utils.DateFormat(favoriteArticle.getDate()));
+        holder.tvSource.setText(favoriteArticle.getAppbarTitle());
+        holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(favoriteArticle.getDate())));
+        //holder.cardView.setOnClickListener(v -> mainActivity.openDetailScreen(apiArticle));
     }
 
     @Override
     public int getItemCount() {
-        return apiArticles.size();
+        return favoriteArticles.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
