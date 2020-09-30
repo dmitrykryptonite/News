@@ -47,9 +47,9 @@ public class DatabaseNewsManager {
         emitter.onNext(getAllNews());
     }
 
-    public Completable saveNewsToFavorites(String title, String appbarTitle, String appbarSubtitle,
-                                           String date, String author, String description,
-                                           String pathToImage) {
+    public Completable saveNewsToFavorites(String title, String appbarTitle,
+                                           String appbarSubtitle, String date, String author,
+                                           String description, String pathToImage, String url) {
         return Completable.create(emitter -> {
             ContentValues values = new ContentValues();
             SQLiteDatabase sqLiteDatabase = databaseNews.getWritableDatabase();
@@ -61,11 +61,13 @@ public class DatabaseNewsManager {
             values.put(DatabaseNews.NEWS_AUTHOR, author);
             values.put(DatabaseNews.NEWS_DESCRIPTION, description);
             values.put(DatabaseNews.NEWS_PATH_TO_IMAGE, pathToImage);
+            values.put(DatabaseNews.NEWS_URL, url);
             sqLiteDatabase.insert(DatabaseNews.TABLE_NEWS, null, values);
             closeDB();
             emitter.onComplete();
-            if (DatabaseNewsManager.this.emitter != null)
+            if (DatabaseNewsManager.this.emitter != null) {
                 DatabaseNewsManager.this.emitter.onNext(getAllNews());
+            }
         });
     }
 
@@ -83,6 +85,7 @@ public class DatabaseNewsManager {
             int authorColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_AUTHOR);
             int descriptionColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_DESCRIPTION);
             int pathToImageColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_PATH_TO_IMAGE);
+            int urlColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_URL);
             do {
                 int id = cursor.getInt(idColIndex);
                 String title = cursor.getString(titleColIndex);
@@ -92,8 +95,9 @@ public class DatabaseNewsManager {
                 String author = cursor.getString(authorColIndex);
                 String description = cursor.getString(descriptionColIndex);
                 String pathToImage = cursor.getString(pathToImageColIndex);
-                FavoriteArticle favoriteArticle = new FavoriteArticle(id, title, appbarTitle,
-                        appbarSubtitle, date, author, description, pathToImage);
+                String url = cursor.getString(urlColIndex);
+                FavoriteArticle favoriteArticle = new FavoriteArticle(id, title,
+                        appbarTitle, appbarSubtitle, date, author, description, pathToImage, url);
                 articlesList.add(favoriteArticle);
             } while (cursor.moveToNext());
         }
@@ -102,12 +106,47 @@ public class DatabaseNewsManager {
         return articlesList;
     }
 
-    public Completable deleteNewsFromFavorites(int id) {
+    public FavoriteArticle getNewsByTitleApiArticle(String strTitle) {
+        SQLiteDatabase sqLiteDatabase = databaseNews.getWritableDatabase();
+        FavoriteArticle favoriteArticle = null;
+        Cursor cursor = sqLiteDatabase.query(DatabaseNews.TABLE_NEWS, null,
+                "title=?", new String[]{strTitle}, null,
+                null, null);
+        if (cursor.moveToFirst()) {
+            int idColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_ID);
+            int titleColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_TITLE);
+            int appbarTitleColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_APPBAR_TITLE);
+            int appbarSubtitleColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_APPBAR_SUBTITLE);
+            int dateColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_DATE);
+            int authorColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_AUTHOR);
+            int descriptionColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_DESCRIPTION);
+            int pathToImageColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_PATH_TO_IMAGE);
+            int urlColIndex = cursor.getColumnIndex(DatabaseNews.NEWS_URL);
+            do {
+                int id = cursor.getInt(idColIndex);
+                String title = cursor.getString(titleColIndex);
+                String appbarTitle = cursor.getString(appbarTitleColIndex);
+                String appbarSubtitle = cursor.getString(appbarSubtitleColIndex);
+                String date = cursor.getString(dateColIndex);
+                String author = cursor.getString(authorColIndex);
+                String description = cursor.getString(descriptionColIndex);
+                String pathToImage = cursor.getString(pathToImageColIndex);
+                String url = cursor.getString(urlColIndex);
+                favoriteArticle = new FavoriteArticle(id, title, appbarTitle,
+                        appbarSubtitle, date, author, description, pathToImage, url);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return favoriteArticle;
+    }
+
+    public Completable deleteNewsFromFavorites(String title) {
         return Completable.create(emitter -> {
             SQLiteDatabase sqLiteDatabase = databaseNews.getWritableDatabase();
             connectionsCount++;
             sqLiteDatabase.execSQL("DELETE FROM " + DatabaseNews.TABLE_NEWS + " WHERE " +
-                    DatabaseNews.NEWS_ID + " = " + id);
+                    DatabaseNews.NEWS_TITLE + " = '" + title + "'");
             closeDB();
             emitter.onComplete();
             if (DatabaseNewsManager.this.emitter != null)

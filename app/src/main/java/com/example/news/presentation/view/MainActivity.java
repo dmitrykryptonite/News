@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.news.R;
+import com.example.news.app.App;
 import com.example.news.entities.data.ApiArticle;
 import com.example.news.navigation.Router;
 import com.example.news.presentation.presenter.MainPresenter;
@@ -43,6 +44,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rvActualNews = findViewById(R.id.rvActualNews);
+        rvActualNews.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvActualNews.setLayoutManager(llm);
         adapter = new ListActualNewsRecyclerViewAdapter(this);
@@ -174,13 +176,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void openDetailScreen(ApiArticle apiArticle) {
-        presenter.openDetailScreen(apiArticle);
+    public void openDetailActualScreen(ApiArticle apiArticle) {
+        presenter.openDetailActualScreen(apiArticle);
     }
 
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    @Override
+    public void showErrorMassage(String massage) {
+        Toast.makeText(App.getApp(), massage, Toast.LENGTH_SHORT).show();
     }
 
     @Override

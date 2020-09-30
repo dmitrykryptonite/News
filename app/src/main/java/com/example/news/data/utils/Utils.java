@@ -22,19 +22,19 @@ public class Utils {
         return isTime;
     }
 
-    public static String DateFormat(String oldStringDate) {
+    public static String DateFormat(String oldDate) {
         String newDate = null;
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("E, d MMM yyyy", new Locale(getCountry()));
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-                    Locale.ENGLISH).parse(oldStringDate);
+                    Locale.ENGLISH).parse(oldDate);
             if (date != null) {
                 newDate = dateFormat.format(date);
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            newDate = oldStringDate;
+            newDate = oldDate;
         }
         return newDate;
     }

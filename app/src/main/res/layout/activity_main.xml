@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -115,9 +115,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvActualNews"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/searchPanel"
                 android:layout_marginTop="5dp"
+                tools:listitem="@layout/item_rv_news"
                 android:scrollbars="vertical" />
 
         </RelativeLayout>

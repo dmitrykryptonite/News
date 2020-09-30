@@ -2,9 +2,7 @@ package com.example.news.presentation.view;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -15,28 +13,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.news.R;
 import com.example.news.app.App;
 import com.example.news.navigation.Router;
-import com.example.news.presentation.presenter.DetailActualPresenter;
+import com.example.news.presentation.presenter.DetailFavoritePresenter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
-public class DetailActualActivity extends MvpAppCompatActivity implements DetailActualView,
+public class DetailFavoriteActivity extends MvpAppCompatActivity implements DetailFavoriteView,
         AppBarLayout.OnOffsetChangedListener {
     @InjectPresenter
-    DetailActualPresenter presenter;
+    DetailFavoritePresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
     private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
@@ -47,7 +42,7 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_actual);
+        setContentView(R.layout.activity_detail_favorite);
         dateBehavior = findViewById(R.id.dateBehavior);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,9 +82,9 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
             appbarSubtitle.setVisibility(View.VISIBLE);
             isHideToolbarView = !isHideToolbarView;
         } else if (percentage < 1f && isHideToolbarView) {
+            dateBehavior.setVisibility(View.VISIBLE);
             appbarTitle.setVisibility(View.GONE);
             appbarSubtitle.setVisibility(View.GONE);
-            dateBehavior.setVisibility(View.VISIBLE);
             isHideToolbarView = !isHideToolbarView;
         }
     }
@@ -120,23 +115,11 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     }
 
     @Override
-    public void setImage(String urlToImage, String imageName) {
+    public void setImage(String pathToImage) {
         Glide.with(this)
-                .asBitmap()
-                .load(urlToImage)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                                                @Nullable Transition<? super Bitmap> transition) {
-                        imgBackdrop.setImageBitmap(resource);
-                        presenter.saveImage(resource, imageName);
-                        presenter.setPathToImage(presenter.saveImage(resource, imageName));
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+                .load(pathToImage)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imgBackdrop);
     }
 
     @SuppressLint("SetJavaScriptEnabled")

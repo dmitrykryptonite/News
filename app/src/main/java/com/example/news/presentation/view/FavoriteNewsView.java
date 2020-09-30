@@ -17,4 +17,13 @@ public interface FavoriteNewsView extends MvpView {
 
     @StateStrategyType(SkipStrategy.class)
     void updateFavoriteNewsList(List<FavoriteArticle> favoriteArticles);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showSuccessMassage(String massage);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showErrorMassage(String massage);
+
+    @StateStrategyType(SkipStrategy.class)
+    void openDetailFavoriteScreen(FavoriteArticle favoriteArticle);
 }

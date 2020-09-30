@@ -3,6 +3,7 @@ package com.example.news.domain;
 import android.graphics.Bitmap;
 
 import com.example.news.data.repository.MainRepositoryImpl;
+import com.example.news.entities.FavoriteArticle;
 import com.example.news.entities.data.ApiArticle;
 
 import io.reactivex.Completable;
@@ -22,12 +23,21 @@ public class DetailActualInteractorImpl implements DetailActualInteractor {
     }
 
     @Override
-    public Completable saveNewsToFavorites(String title, String appbarTitle, String appbarSubtitle, String date, String author, String description, String pathToImage) {
-        return mainRepositoryImpl.saveNewsToFavorites(title, appbarTitle, appbarSubtitle, date, author, description, pathToImage);
+    public FavoriteArticle getNewsByTitleApiArticle(String title) {
+        return mainRepositoryImpl.getNewsByTitleApiArticle(title);
     }
 
     @Override
-    public Completable deleteNewsFromFavorites(int id) {
-        return null;
+    public Completable saveNewsToFavorites(String title, String appbarTitle,
+                                           String appbarSubtitle, String date, String author,
+                                           String description, String pathToImage, String url) {
+        return mainRepositoryImpl.saveNewsToFavorites(title, appbarTitle,
+                appbarSubtitle, date, author, description, pathToImage, url);
+    }
+
+
+    @Override
+    public Completable deleteNewsFromFavorites(String title) {
+        return mainRepositoryImpl.deleteNewsFromFavorites(title);
     }
 }

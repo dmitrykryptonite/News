@@ -1,5 +1,6 @@
 package com.example.news.data.api;
 
+import com.example.news.app.App;
 import com.example.news.data.api.services.ApiInterface;
 
 import okhttp3.OkHttpClient;
@@ -24,10 +25,12 @@ public class ApiClient {
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.level(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                    .addInterceptor(new NetworkConnectionInterceptor(App.getApp()));
+            builder.addInterceptor(interceptor);
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(client)
+                    .client(builder.build())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

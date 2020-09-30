@@ -40,7 +40,8 @@ public class MainRepositoryImpl implements MainRepository {
 
     @Override
     public Single<ApiNews> getNewsSearch(String keyword, String apiKey) {
-        return apiClient.getApiInterface().getNewsSearch(keyword, Utils.getLanguage(), "publishedAt", apiKey);
+        return apiClient.getApiInterface().getNewsSearch(keyword, Utils.getLanguage(),
+                "publishedAt", apiKey);
     }
 
     @Override
@@ -59,10 +60,21 @@ public class MainRepositoryImpl implements MainRepository {
     }
 
     @Override
-    public Completable saveNewsToFavorites(String title, String appbarTitle, String appbarSubtitle,
-                                           String date, String author, String description, String pathToImage) {
-        return databaseNewsManager.saveNewsToFavorites(title, appbarTitle, appbarSubtitle, date, author,
-                description, pathToImage);
+    public FavoriteArticle getNewsByTitleApiArticle(String title) {
+        return databaseNewsManager.getNewsByTitleApiArticle(title);
+    }
+
+    @Override
+    public Completable saveNewsToFavorites(String title, String appbarTitle,
+                                           String appbarSubtitle, String date, String author,
+                                           String description, String pathToImage, String url) {
+        return databaseNewsManager.saveNewsToFavorites(title, appbarTitle,
+                appbarSubtitle, date, author, description, pathToImage, url);
+    }
+
+    @Override
+    public Completable deleteNewsFromFavorites(String title) {
+        return databaseNewsManager.deleteNewsFromFavorites(title);
     }
 
     @Override
@@ -71,7 +83,12 @@ public class MainRepositoryImpl implements MainRepository {
     }
 
     @Override
-    public Completable deleteNewsFromFavorites(int id) {
-        return databaseNewsManager.deleteNewsFromFavorites(id);
+    public void saveFavoriteArticle(FavoriteArticle favoriteArticle) {
+        sharedPreferencesManager.saveFavoriteArticle(favoriteArticle);
+    }
+
+    @Override
+    public Single<FavoriteArticle> getFavoriteArticle() {
+        return sharedPreferencesManager.getFavoriteArticle();
     }
 }

@@ -9,9 +9,11 @@ public class FavoriteArticle {
     private String author;
     private String description;
     private String pathToImage;
+    private String url;
 
-    public FavoriteArticle(int id, String title, String appbarTitle, String appbarSubtitle, String date,
-                           String author, String description, String pathToImage) {
+    public FavoriteArticle(int id, String title, String appbarTitle,
+                           String appbarSubtitle, String date, String author, String description,
+                           String pathToImage, String url) {
         this.id = id;
         this.title = title;
         this.appbarTitle = appbarTitle;
@@ -20,6 +22,7 @@ public class FavoriteArticle {
         this.author = author;
         this.description = description;
         this.pathToImage = pathToImage;
+        this.url = url;
     }
 
     public int getId() {
@@ -84,5 +87,13 @@ public class FavoriteArticle {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

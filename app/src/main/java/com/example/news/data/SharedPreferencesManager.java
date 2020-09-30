@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import com.example.news.app.App;
+import com.example.news.entities.FavoriteArticle;
 import com.example.news.entities.data.ApiArticle;
 import com.google.gson.Gson;
 
@@ -21,6 +22,7 @@ public class SharedPreferencesManager {
 
     private SharedPreferences preferences;
     private final String SAVED_API_ARTICLE = "saved_api_article";
+    private final String SAVED_FAVORITE_ARTICLE = "saved_favorite_article";
 
     public void saveApiArticle(ApiArticle apiArticle) {
         preferences = PreferenceManager.getDefaultSharedPreferences(App.getApp());
@@ -34,10 +36,29 @@ public class SharedPreferencesManager {
     public Single<ApiArticle> getApiArticle() {
         return Single.create(emitter -> {
             preferences = PreferenceManager.getDefaultSharedPreferences(App.getApp());
-            String saved_apiArticle = preferences.getString(SAVED_API_ARTICLE, "");
+            String savedApiArticle = preferences.getString(SAVED_API_ARTICLE, "");
             Gson gson = new Gson();
-            ApiArticle apiArticle = gson.fromJson(saved_apiArticle, ApiArticle.class);
+            ApiArticle apiArticle = gson.fromJson(savedApiArticle, ApiArticle.class);
             emitter.onSuccess(apiArticle);
+        });
+    }
+
+    public void saveFavoriteArticle(FavoriteArticle favoriteArticle) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(App.getApp());
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String mFavoriteArticle = gson.toJson(favoriteArticle);
+        editor.putString(SAVED_FAVORITE_ARTICLE, mFavoriteArticle);
+        editor.apply();
+    }
+
+    public Single<FavoriteArticle> getFavoriteArticle() {
+        return Single.create(emitter -> {
+            preferences = PreferenceManager.getDefaultSharedPreferences(App.getApp());
+            String savedFavoriteArticle = preferences.getString(SAVED_FAVORITE_ARTICLE, "");
+            Gson gson = new Gson();
+            FavoriteArticle favoriteArticle = gson.fromJson(savedFavoriteArticle, FavoriteArticle.class);
+            emitter.onSuccess(favoriteArticle);
         });
     }
 }

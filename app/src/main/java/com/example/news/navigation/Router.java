@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.example.news.presentation.view.DetailActualActivity;
+import com.example.news.presentation.view.DetailFavoriteActivity;
 import com.example.news.presentation.view.FavoriteNewsActivity;
 
 public class Router {
@@ -14,7 +15,7 @@ public class Router {
         this.activity = activity;
     }
 
-    public void openDetailScreen() {
+    public void openDetailActualScreen() {
         Intent intent = new Intent(activity, DetailActualActivity.class);
         activity.startActivity(intent);
     }
@@ -36,6 +37,11 @@ public class Router {
 
     public void openFavoriteScreen() {
         Intent intent = new Intent(activity, FavoriteNewsActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void openDetailFavoriteScreen() {
+        Intent intent = new Intent(activity, DetailFavoriteActivity.class);
         activity.startActivity(intent);
     }
 }

@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +38,8 @@ public class ListActualNewsRecyclerViewAdapter extends
     }
 
     public void updateActualNewsList(List<ApiArticle> apiArticles) {
-        this.apiArticles = apiArticles;
+        this.apiArticles.clear();
+        this.apiArticles.addAll(apiArticles);
         notifyDataSetChanged();
     }
 
@@ -62,10 +62,6 @@ public class ListActualNewsRecyclerViewAdapter extends
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
-                        FrameLayout.LayoutParams layoutParams =
-                                new FrameLayout.LayoutParams(0, 0);
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        holder.cardView.setLayoutParams(layoutParams);
                         return false;
                     }
 
@@ -85,7 +81,7 @@ public class ListActualNewsRecyclerViewAdapter extends
         holder.tvPublishedAt.setText(Utils.DateFormat(apiArticle.getPublishedAt()));
         holder.tvSource.setText(apiArticle.getSource().getName());
         holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(apiArticle.getPublishedAt())));
-        holder.cardView.setOnClickListener(v -> mainActivity.openDetailScreen(apiArticle));
+        holder.cardView.setOnClickListener(v -> mainActivity.openDetailActualScreen(apiArticle));
     }
 
     @Override

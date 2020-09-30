@@ -2,6 +2,7 @@ package com.example.news.domain;
 
 import android.graphics.Bitmap;
 
+import com.example.news.entities.FavoriteArticle;
 import com.example.news.entities.data.ApiArticle;
 import com.example.news.entities.data.ApiNews;
 
@@ -19,10 +20,17 @@ public interface MainRepository {
 
     String saveImage(Bitmap image, String imageName);
 
+    FavoriteArticle getNewsByTitleApiArticle(String title);
+
     Completable saveNewsToFavorites(String title, String appbarTitle, String appbarSubtitle,
-                                    String date, String author, String description, String pathToImage);
+                                    String date, String author, String description,
+                                    String pathToImage, String url);
+
+    Completable deleteNewsFromFavorites(String title);
 
     void getListNews();
 
-    Completable deleteNewsFromFavorites(int id);
+    void saveFavoriteArticle(FavoriteArticle favoriteArticle);
+
+    Single<FavoriteArticle> getFavoriteArticle();
 }

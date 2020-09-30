@@ -104,6 +104,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribe(apiNews -> {
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
+                }, throwable -> {
+                    getViewState().showWarningMassage(throwable.getMessage());
+                    getViewState().stopRefreshing();
                 });
     }
 
@@ -114,6 +117,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribe(apiNews -> {
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
+                }, throwable -> {
+                    getViewState().showWarningMassage(throwable.getMessage());
+                    getViewState().stopRefreshing();
                 });
     }
 
@@ -121,9 +127,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
         this.router = router;
     }
 
-    public void openDetailScreen(ApiArticle apiArticle) {
+    public void openDetailActualScreen(ApiArticle apiArticle) {
         mainInteractorImpl.saveApiArticle(apiArticle);
-        router.openDetailScreen();
+        router.openDetailActualScreen();
     }
 
     public void onBtnFavoriteNewsClicked() {

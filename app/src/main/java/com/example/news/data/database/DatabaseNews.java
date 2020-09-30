@@ -19,6 +19,7 @@ public class DatabaseNews extends SQLiteOpenHelper {
     static final String NEWS_AUTHOR = "author";
     static final String NEWS_DESCRIPTION = "description";
     static final String NEWS_PATH_TO_IMAGE = "path_to_image";
+    static final String NEWS_URL = "url";
     private static final String NEWS_TIME_ADDED = "time_added";
 
     private static final String TABLE_CREATE =
@@ -31,6 +32,7 @@ public class DatabaseNews extends SQLiteOpenHelper {
                     NEWS_AUTHOR + " TEXT, " +
                     NEWS_DESCRIPTION + " TEXT, " +
                     NEWS_PATH_TO_IMAGE + " TEXT, " +
+                    NEWS_URL + " TEXT, " +
                     NEWS_TIME_ADDED + " TEXT default CURRENT_TIMESTAMP" + ")";
 
     DatabaseNews(@Nullable Context context) {

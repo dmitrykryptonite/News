@@ -11,8 +11,14 @@ public class FavoriteNewsInteractorImpl implements FavoriteNewsInteractor {
     private MainRepositoryImpl mainRepositoryImpl = MainRepositoryImpl.getInstance();
     public Observable<List<FavoriteArticle>> favoriteArticlesUpdateListener =
             mainRepositoryImpl.favoriteArticlesUpdateListener;
+
     @Override
     public void getListNews() {
         mainRepositoryImpl.getListNews();
+    }
+
+    @Override
+    public void saveFavoriteArticle(FavoriteArticle favoriteArticle) {
+        mainRepositoryImpl.saveFavoriteArticle(favoriteArticle);
     }
 }

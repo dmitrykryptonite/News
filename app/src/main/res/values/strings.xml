@@ -1,8 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">News</string>
     <string name="search">Search</string>
     <string name="button_search_news">Button: search news</string>
-    <string name="search_latest_news">Search Latest News...</string>
+    <string name="search_latest_news" tools:ignore="TypographyEllipsis">
+        Search Latest News...</string>
     <string name="button_open_favorite_news">Button: open favorite news</string>
     <string name="author">Author</string>
     <string name="_01_january_1990">01 January 1990</string>

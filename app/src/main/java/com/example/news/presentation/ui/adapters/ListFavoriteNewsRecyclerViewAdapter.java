@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListFavoriteNewsRecyclerViewAdapter extends
-        RecyclerView.Adapter<ListFavoriteNewsRecyclerViewAdapter.ViewHolder> {
+        RecyclerView.Adapter<ListFavoriteNewsRecyclerViewAdapter.FavoriteViewHolder> {
     private List<FavoriteArticle> favoriteArticles = new ArrayList<>();
     private FavoriteNewsActivity favoriteActivity;
 
@@ -39,21 +38,23 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
     }
 
     public void updateFavoriteNewsList(List<FavoriteArticle> favoriteArticles) {
-        this.favoriteArticles = favoriteArticles;
+        this.favoriteArticles.clear();
+        this.favoriteArticles.addAll(favoriteArticles);
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ListFavoriteNewsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                                             int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                 int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_rv_news, parent, false);
-        return new ViewHolder(view);
+        return new FavoriteViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListFavoriteNewsRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder,
                                  int position) {
         final FavoriteArticle favoriteArticle = favoriteArticles.get(position);
         Glide.with(App.getApp())
@@ -62,10 +63,6 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
-                        FrameLayout.LayoutParams layoutParams =
-                                new FrameLayout.LayoutParams(0, 0);
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        holder.cardView.setLayoutParams(layoutParams);
                         return false;
                     }
 
@@ -85,7 +82,8 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
         holder.tvPublishedAt.setText(Utils.DateFormat(favoriteArticle.getDate()));
         holder.tvSource.setText(favoriteArticle.getAppbarTitle());
         holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(favoriteArticle.getDate())));
-        //holder.cardView.setOnClickListener(v -> mainActivity.openDetailScreen(apiArticle));
+        holder.cardView.setOnClickListener(v -> favoriteActivity
+                .openDetailFavoriteScreen(favoriteArticle));
     }
 
     @Override
@@ -93,13 +91,13 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
         return favoriteArticles.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class FavoriteViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
         ImageView imgV;
         ProgressBar progressLoadPhoto;
         CardView cardView;
 
-        ViewHolder(@NonNull View itemView) {
+        FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDesc = itemView.findViewById(R.id.tvDesc);
