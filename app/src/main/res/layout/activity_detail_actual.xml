@@ -60,6 +60,27 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/bottom_shadow" />
 
+                <ImageView
+                    android:id="@+id/imgNotFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/image_not_found_photo_to_news"
+                    android:src="@drawable/ic_image_white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNotFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgNotFound"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/image_not_found_sorry"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar

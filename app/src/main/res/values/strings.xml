@@ -21,4 +21,6 @@
     <string name="image_share_news">Image: share news</string>
     <string name="image_favorite">Image: favorite</string>
     <string name="favorites">Favorites</string>
+    <string name="image_not_found_photo_to_news">Image: not found photo to news</string>
+    <string name="image_not_found_sorry">Image not found, sorry</string>
 </resources>

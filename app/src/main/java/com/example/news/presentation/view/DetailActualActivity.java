@@ -21,7 +21,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.news.R;
 import com.example.news.app.App;
@@ -39,9 +43,8 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     DetailActualPresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
-    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
-    private ImageView imgBackdrop;
-    private ImageView imgAddToFavorite;
+    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle, tvNotFound;
+    private ImageView imgBackdrop, imgAddToFavorite, imgNotFound;
     private WebView webView;
 
     @Override
@@ -66,6 +69,8 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
         tvTime = findViewById(R.id.tvTime);
         tvTitle = findViewById(R.id.tvTitle);
         imgBackdrop = findViewById(R.id.imgBackdrop);
+        imgNotFound = findViewById(R.id.imgNotFound);
+        tvNotFound = findViewById(R.id.tvNotFound);
         webView = findViewById(R.id.webView);
         Router router = new Router(this);
         presenter.setRouter(router);
@@ -120,10 +125,33 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     }
 
     @Override
+    public void showNotFoundPanel() {
+        imgNotFound.setVisibility(View.VISIBLE);
+        tvNotFound.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void setImage(String urlToImage, String imageName) {
         Glide.with(this)
                 .asBitmap()
                 .load(urlToImage)
+                .listener(new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e,
+                                                Object model, Target<Bitmap> target,
+                                                boolean isFirstResource) {
+                        presenter.onLoadImageFailed();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model,
+                                                   Target<Bitmap> target,
+                                                   DataSource dataSource,
+                                                   boolean isFirstResource) {
+                        return false;
+                    }
+                })
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource,

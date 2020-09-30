@@ -62,6 +62,9 @@ public class ListActualNewsRecyclerViewAdapter extends
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
+                        holder.imgNotFound.setVisibility(View.VISIBLE);
+                        holder.tvNotFound.setVisibility(View.VISIBLE);
+                        holder.progressLoadPhoto.setVisibility(View.GONE);
                         return false;
                     }
 
@@ -90,8 +93,8 @@ public class ListActualNewsRecyclerViewAdapter extends
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
-        ImageView imgV;
+        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime, tvNotFound;
+        ImageView imgV, imgNotFound;
         ProgressBar progressLoadPhoto;
         CardView cardView;
 
@@ -104,6 +107,8 @@ public class ListActualNewsRecyclerViewAdapter extends
             tvSource = itemView.findViewById(R.id.tvSource);
             tvTime = itemView.findViewById(R.id.tvTime);
             imgV = itemView.findViewById(R.id.imgV);
+            imgNotFound = itemView.findViewById(R.id.imgNotFound);
+            tvNotFound = itemView.findViewById(R.id.tvNotFound);
             progressLoadPhoto = itemView.findViewById(R.id.progressLoadPhoto);
             cardView = itemView.findViewById(R.id.cardView);
         }

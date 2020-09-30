@@ -50,6 +50,10 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                 });
     }
 
+    public void onLoadImageFailed() {
+        getViewState().showNotFoundPanel();
+    }
+
     public void setRouter(Router router) {
         this.router = router;
     }

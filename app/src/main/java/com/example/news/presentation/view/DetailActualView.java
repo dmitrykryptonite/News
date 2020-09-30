@@ -21,6 +21,9 @@ public interface DetailActualView extends MvpView {
     void setTextTvTitle(String title);
 
     @StateStrategyType(SkipStrategy.class)
+    void showNotFoundPanel();
+
+    @StateStrategyType(SkipStrategy.class)
     void setImage(String urlToImage, String imageName);
 
     @StateStrategyType(SkipStrategy.class)
