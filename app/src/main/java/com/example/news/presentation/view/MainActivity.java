@@ -78,6 +78,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         presenter.setRouter(router);
     }
 
+
     @Override
     public void onBackPressed() {
         presenter.onBackPressed(API_KEY);
@@ -137,6 +138,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void updateActualNewsList(List<ApiArticle> apiArticles) {
         adapter.updateActualNewsList(apiArticles);
+    }
+
+    @Override
+    public void clearActualNewsList() {
+        adapter.clearActualNewsList();
     }
 
     @Override

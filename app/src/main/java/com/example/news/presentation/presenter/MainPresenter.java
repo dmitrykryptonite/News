@@ -105,6 +105,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
                 }, throwable -> {
+                    getViewState().editTextSearchSetText("");
+                    isSearchingMode = false;
+                    getViewState().showPanel(isSearchingMode);
+                    getViewState().recyclerViewMovingScrollToStartPosition();
+                    getViewState().clearActualNewsList();
                     getViewState().showWarningMassage(throwable.getMessage());
                     getViewState().stopRefreshing();
                 });
@@ -118,6 +123,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     getViewState().updateActualNewsList(apiNews.getArticles());
                     getViewState().stopRefreshing();
                 }, throwable -> {
+                    searchHistory.subList(1, searchHistory.size()).clear();
+                    getViewState().recyclerViewMovingScrollToStartPosition();
+                    getViewState().clearActualNewsList();
                     getViewState().showWarningMassage(throwable.getMessage());
                     getViewState().stopRefreshing();
                 });

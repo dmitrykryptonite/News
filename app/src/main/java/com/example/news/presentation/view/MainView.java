@@ -35,6 +35,9 @@ public interface MainView extends MvpView {
     void updateActualNewsList(List<ApiArticle> apiArticles);
 
     @StateStrategyType(SkipStrategy.class)
+    void clearActualNewsList();
+
+    @StateStrategyType(SkipStrategy.class)
     void stopRefreshing();
 
     @StateStrategyType(AddToEndSingleStrategy.class)

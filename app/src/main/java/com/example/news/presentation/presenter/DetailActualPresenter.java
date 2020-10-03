@@ -1,7 +1,5 @@
 package com.example.news.presentation.presenter;
 
-import android.graphics.Bitmap;
-
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.DetailActualInteractorImpl;
 import com.example.news.entities.data.ApiArticle;
@@ -18,7 +16,7 @@ import moxy.MvpPresenter;
 public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
     private DetailActualInteractorImpl detailActualInteractorImpl = new DetailActualInteractorImpl();
     private Disposable disposableGetApiArticle, disposableSaveNewsToFavorites,
-            disposableDeleteNewsFromFavorites;
+            disposableDeleteNewsFromFavorites, disposableSaveImageByUrl, disposableDeleteImageByPath;
     private Router router;
     private ApiArticle apiArticle;
     private String pathToImage;
@@ -39,10 +37,11 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                     getViewState().setTextTvTime(String.format("%s%s •%s",
                             apiArticle.getSource().getName(), author,
                             Utils.DateToTimeFormat(apiArticle.getPublishedAt())));
-                    getViewState().setImage(apiArticle.getUrlToImage(), apiArticle.getSource().getName());
+                    getViewState().setImage(apiArticle.getUrlToImage());
                     getViewState().setUrlToWebView(apiArticle.getUrl());
                     getViewState().setTextTvTitle(apiArticle.getTitle());
-                    if (detailActualInteractorImpl.getNewsByTitleApiArticle(apiArticle.getTitle()) != null) {
+                    if (detailActualInteractorImpl
+                            .getNewsByTitleApiArticle(apiArticle.getTitle()) != null) {
                         getViewState().btnAddToFavoriteSetColorYellow();
                     } else {
                         getViewState().btnAddToFavoriteSetColorWhite();
@@ -50,51 +49,69 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                 });
     }
 
-    public void onLoadImageFailed() {
-        getViewState().showNotFoundPanel();
-    }
-
     public void setRouter(Router router) {
         this.router = router;
     }
 
     public void onBtnShareClicked() {
-        router.shareNews(apiArticle.getSource().getName(), apiArticle.getTitle(), apiArticle.getUrl());
+        router.shareNews(apiArticle.getSource().getName(),
+                apiArticle.getTitle(), apiArticle.getUrl());
     }
 
     public void onBtnOpenInBrowserClicked() {
         router.openNewsInBrowser(apiArticle.getUrl());
     }
 
-    public String saveImage(Bitmap image, String imageName) {
-        return detailActualInteractorImpl.saveImage(image, imageName);
-    }
-
-    public void setPathToImage(String pathToImage) {
-        this.pathToImage = pathToImage;
-    }
-
     public void onBtnAddToFavoriteClicked() {
         if (detailActualInteractorImpl.getNewsByTitleApiArticle(apiArticle.getTitle()) == null) {
-            disposableSaveNewsToFavorites = detailActualInteractorImpl.saveNewsToFavorites(
-                    apiArticle.getTitle(), apiArticle.getSource().getName(), apiArticle.getUrl(),
-                    apiArticle.getPublishedAt(), apiArticle.getAuthor(),
-                    apiArticle.getDescription(), pathToImage, apiArticle.getUrl())
+            disposableSaveImageByUrl = detailActualInteractorImpl.saveImageByUrl(
+                    apiArticle.getUrlToImage(), apiArticle.getSource().getName())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        getViewState().btnAddToFavoriteSetColorYellow();
-                        getViewState().showSuccessMassage("News added to favorites");
-                    }, throwable -> getViewState().showErrorMassage(throwable.getMessage()));
+                    .subscribe(pathToImage -> {
+                        this.pathToImage = pathToImage;
+                        disposableSaveNewsToFavorites = detailActualInteractorImpl
+                                .saveNewsToFavorites(apiArticle.getTitle(),
+                                        apiArticle.getSource().getName(),
+                                        apiArticle.getUrl(),
+                                        apiArticle.getPublishedAt(), apiArticle.getAuthor(),
+                                        apiArticle.getDescription(), pathToImage,
+                                        apiArticle.getUrl())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(() -> {
+                                    getViewState().btnAddToFavoriteSetColorYellow();
+                                    getViewState().showSuccessMassage("News added to favorites");
+                                }, throwable -> getViewState()
+                                        .showErrorMassage(throwable.getMessage()));
+                    });
         } else {
-            disposableDeleteNewsFromFavorites = detailActualInteractorImpl.deleteNewsFromFavorites(
-                    apiArticle.getTitle())
+            disposableDeleteImageByPath = detailActualInteractorImpl.deleteImageByPath(pathToImage)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        getViewState().btnAddToFavoriteSetColorWhite();
-                        getViewState().showSuccessMassage("News deleted from favorites");
-                    }, throwable -> getViewState().showErrorMassage(throwable.getMessage()));
+                    .subscribe(() -> disposableDeleteNewsFromFavorites = detailActualInteractorImpl
+                                    .deleteNewsFromFavorites(apiArticle.getTitle())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                        getViewState().btnAddToFavoriteSetColorWhite();
+                                        getViewState()
+                                                .showSuccessMassage("News deleted from favorites");
+                                    }, throwable -> getViewState()
+                                            .showErrorMassage(throwable.getMessage())),
+                            throwable -> {
+                                disposableDeleteNewsFromFavorites = detailActualInteractorImpl
+                                        .deleteNewsFromFavorites(apiArticle.getTitle())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(() -> {
+                                            getViewState().btnAddToFavoriteSetColorWhite();
+                                            getViewState()
+                                                    .showSuccessMassage("News deleted from favorites");
+                                        }, mThrowable -> getViewState()
+                                                .showErrorMassage(mThrowable.getMessage()));
+                                getViewState().showErrorMassage(throwable.getMessage());
+                            });
         }
     }
 
@@ -111,5 +128,9 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
             disposableSaveNewsToFavorites.dispose();
         if (disposableDeleteNewsFromFavorites != null && disposableDeleteNewsFromFavorites.isDisposed())
             disposableDeleteNewsFromFavorites.dispose();
+        if (disposableSaveImageByUrl != null && disposableSaveImageByUrl.isDisposed())
+            disposableSaveImageByUrl.dispose();
+        if (disposableDeleteImageByPath != null && disposableDeleteImageByPath.isDisposed())
+            disposableDeleteImageByPath.dispose();
     }
 }

@@ -15,4 +15,6 @@ public interface DetailFavoriteInteractor {
                                     String pathToImage, String url);
 
     Completable deleteNewsFromFavorites(String title);
+
+    Completable deleteImageByPath(String pathToImage);
 }

@@ -60,6 +60,72 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/bottom_shadow" />
 
+                <ImageView
+                    android:id="@+id/imgPermissionDenied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="60dp"
+                    android:contentDescription="@string/image_not_found_photo_to_news"
+                    android:src="@drawable/ic_image_white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvPermissionDenied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgPermissionDenied"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/permissions_denied_to_save_pictures"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnTapToChangePermission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvPermissionDenied"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-10dp"
+                    android:background="@null"
+                    android:text="@string/tap_to_change"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <View
+                    android:id="@+id/lineFromTvTapToChangePermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/btnTapToChangePermission"
+                    android:layout_alignStart="@+id/btnTapToChangePermission"
+                    android:layout_alignEnd="@+id/btnTapToChangePermission"
+                    android:layout_marginTop="-15dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/imgNotFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="70dp"
+                    android:contentDescription="@string/image_not_found_photo_to_news"
+                    android:src="@drawable/ic_image_white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNotFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgNotFound"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/image_not_found_sorry"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar

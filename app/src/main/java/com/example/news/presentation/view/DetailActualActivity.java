@@ -1,10 +1,11 @@
 package com.example.news.presentation.view;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -24,9 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.news.R;
 import com.example.news.app.App;
 import com.example.news.navigation.Router;
@@ -39,12 +38,13 @@ import moxy.presenter.InjectPresenter;
 
 public class DetailActualActivity extends MvpAppCompatActivity implements DetailActualView,
         AppBarLayout.OnOffsetChangedListener {
+    private static final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 7777;
     @InjectPresenter
     DetailActualPresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
-    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle, tvNotFound;
-    private ImageView imgBackdrop, imgAddToFavorite, imgNotFound;
+    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
+    private ImageView imgBackdrop, imgAddToFavorite;
     private WebView webView;
 
     @Override
@@ -69,8 +69,6 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
         tvTime = findViewById(R.id.tvTime);
         tvTitle = findViewById(R.id.tvTitle);
         imgBackdrop = findViewById(R.id.imgBackdrop);
-        imgNotFound = findViewById(R.id.imgNotFound);
-        tvNotFound = findViewById(R.id.tvNotFound);
         webView = findViewById(R.id.webView);
         Router router = new Router(this);
         presenter.setRouter(router);
@@ -79,7 +77,27 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
         ImageView imgShare = findViewById(R.id.imgShare);
         imgShare.setOnClickListener(v -> presenter.onBtnShareClicked());
         imgAddToFavorite = findViewById(R.id.imgAddToFavorite);
-        imgAddToFavorite.setOnClickListener(v -> presenter.onBtnAddToFavoriteClicked());
+        imgAddToFavorite.setOnClickListener(v -> {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED)
+                presenter.onBtnAddToFavoriteClicked();
+            else if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED)
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                presenter.onBtnAddToFavoriteClicked();
+            } else {
+                presenter.onBtnAddToFavoriteClicked();
+            }
+        }
     }
 
     @Override
@@ -125,13 +143,7 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     }
 
     @Override
-    public void showNotFoundPanel() {
-        imgNotFound.setVisibility(View.VISIBLE);
-        tvNotFound.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setImage(String urlToImage, String imageName) {
+    public void setImage(String urlToImage) {
         Glide.with(this)
                 .asBitmap()
                 .load(urlToImage)
@@ -140,7 +152,6 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
                     public boolean onLoadFailed(@Nullable GlideException e,
                                                 Object model, Target<Bitmap> target,
                                                 boolean isFirstResource) {
-                        presenter.onLoadImageFailed();
                         return false;
                     }
 
@@ -152,19 +163,7 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
                         return false;
                     }
                 })
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                                                @Nullable Transition<? super Bitmap> transition) {
-                        imgBackdrop.setImageBitmap(resource);
-                        presenter.saveImage(resource, imageName);
-                        presenter.setPathToImage(presenter.saveImage(resource, imageName));
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+                .into(imgBackdrop);
     }
 
     @SuppressLint("SetJavaScriptEnabled")

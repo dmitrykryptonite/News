@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">News</string>
-    <string name="search">Search</string>
     <string name="button_search_news">Button: search news</string>
     <string name="search_latest_news" tools:ignore="TypographyEllipsis">
         Search Latest News...</string>
@@ -11,7 +10,6 @@
     <string name="desc">Desc</string>
     <string name="source">Source</string>
     <string name="imgView">imgView</string>
-    <string name="title_of_news">Title of News</string>
     <string name="image_backdrop">Image: backdrop</string>
     <string name="image_top_shadow">Image: top shadow</string>
     <string name="image_bot_shadow">Image: bot shadow</string>
@@ -23,4 +21,6 @@
     <string name="favorites">Favorites</string>
     <string name="image_not_found_photo_to_news">Image: not found photo to news</string>
     <string name="image_not_found_sorry">Image not found, sorry</string>
+    <string name="permissions_denied_to_save_pictures">Permissions denied to save pictures</string>
+    <string name="tap_to_change">Tap to change</string>
 </resources>

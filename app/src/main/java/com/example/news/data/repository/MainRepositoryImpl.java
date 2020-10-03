@@ -1,7 +1,5 @@
 package com.example.news.data.repository;
 
-import android.graphics.Bitmap;
-
 import com.example.news.data.FileManager;
 import com.example.news.data.SharedPreferencesManager;
 import com.example.news.data.api.ApiClient;
@@ -55,8 +53,13 @@ public class MainRepositoryImpl implements MainRepository {
     }
 
     @Override
-    public String saveImage(Bitmap image, String imageName) {
-        return fileManager.saveImage(image, imageName);
+    public Single<String> saveImageByUrl(String url, String imageName) {
+        return fileManager.saveImageByUrl(url, imageName);
+    }
+
+    @Override
+    public Completable deleteImageByPath(String pathToImage) {
+        return fileManager.deleteImageByPath(pathToImage);
     }
 
     @Override

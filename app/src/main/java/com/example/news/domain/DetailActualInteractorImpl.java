@@ -1,7 +1,5 @@
 package com.example.news.domain;
 
-import android.graphics.Bitmap;
-
 import com.example.news.data.repository.MainRepositoryImpl;
 import com.example.news.entities.FavoriteArticle;
 import com.example.news.entities.data.ApiArticle;
@@ -18,8 +16,13 @@ public class DetailActualInteractorImpl implements DetailActualInteractor {
     }
 
     @Override
-    public String saveImage(Bitmap image, String imageName) {
-        return mainRepositoryImpl.saveImage(image, imageName);
+    public Single<String> saveImageByUrl(String url, String imageName) {
+        return mainRepositoryImpl.saveImageByUrl(url, imageName);
+    }
+
+    @Override
+    public Completable deleteImageByPath(String pathToImage) {
+        return mainRepositoryImpl.deleteImageByPath(pathToImage);
     }
 
     @Override

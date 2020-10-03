@@ -43,20 +43,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="60dp"
                 android:contentDescription="@string/image_not_found_photo_to_news"
                 android:src="@drawable/ic_image_white"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tvNotFound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imgNotFound"
-                android:layout_centerHorizontal="true"
-                android:text="@string/image_not_found_sorry"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:visibility="gone" />
 
             <ProgressBar

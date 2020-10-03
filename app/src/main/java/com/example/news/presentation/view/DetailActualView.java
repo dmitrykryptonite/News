@@ -21,10 +21,7 @@ public interface DetailActualView extends MvpView {
     void setTextTvTitle(String title);
 
     @StateStrategyType(SkipStrategy.class)
-    void showNotFoundPanel();
-
-    @StateStrategyType(SkipStrategy.class)
-    void setImage(String urlToImage, String imageName);
+    void setImage(String urlToImage);
 
     @StateStrategyType(SkipStrategy.class)
     void setUrlToWebView(String url);

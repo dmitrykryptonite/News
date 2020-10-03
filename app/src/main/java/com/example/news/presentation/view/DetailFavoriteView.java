@@ -21,6 +21,15 @@ public interface DetailFavoriteView extends MvpView {
     void setTextTvTitle(String title);
 
     @StateStrategyType(SkipStrategy.class)
+    void showErrorPanelFromImageIfPermissionGranted(String error);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showErrorPanelFromImageIfPermissionDenied(String error);
+
+    @StateStrategyType(SkipStrategy.class)
+    void hideErrorPanel();
+
+    @StateStrategyType(SkipStrategy.class)
     void setImage(String pathToImage);
 
     @StateStrategyType(SkipStrategy.class)

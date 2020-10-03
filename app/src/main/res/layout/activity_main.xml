@@ -117,9 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/searchPanel"
-                android:layout_marginTop="5dp"
-                tools:listitem="@layout/item_rv_news"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                tools:listitem="@layout/item_rv_actual_news" />
 
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -1,7 +1,5 @@
 package com.example.news.domain;
 
-import android.graphics.Bitmap;
-
 import com.example.news.entities.FavoriteArticle;
 import com.example.news.entities.data.ApiArticle;
 import com.example.news.entities.data.ApiNews;
@@ -18,7 +16,9 @@ public interface MainRepository {
 
     Single<ApiArticle> getApiArticle();
 
-    String saveImage(Bitmap image, String imageName);
+    Single<String> saveImageByUrl(String url, String imageName);
+
+    Completable deleteImageByPath(String pathToImage);
 
     FavoriteArticle getNewsByTitleApiArticle(String title);
 

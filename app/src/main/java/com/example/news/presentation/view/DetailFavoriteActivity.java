@@ -1,23 +1,31 @@
 package com.example.news.presentation.view;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.news.R;
 import com.example.news.app.App;
 import com.example.news.navigation.Router;
@@ -34,10 +42,12 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
     DetailFavoritePresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
-    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
-    private ImageView imgBackdrop;
-    private ImageView imgAddToFavorite;
+    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle, tvPermissionDenied,
+            tvNotFound;
+    private ImageView imgBackdrop, imgAddToFavorite, imgPermissionDenied, imgNotFound;
     private WebView webView;
+    private View lineFromTvTapToChangePermission;
+    private Button btnTapToChangePermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +80,14 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
         imgShare.setOnClickListener(v -> presenter.onBtnShareClicked());
         imgAddToFavorite = findViewById(R.id.imgAddToFavorite);
         imgAddToFavorite.setOnClickListener(v -> presenter.onBtnAddToFavoriteClicked());
+        imgPermissionDenied = findViewById(R.id.imgPermissionDenied);
+        tvPermissionDenied = findViewById(R.id.tvPermissionDenied);
+        btnTapToChangePermission = findViewById(R.id.btnTapToChangePermission);
+        btnTapToChangePermission.setOnClickListener(v ->
+                presenter.onBtnTapToChangePermissionClicked());
+        lineFromTvTapToChangePermission = findViewById(R.id.lineFromTvTapToChangePermission);
+        imgNotFound = findViewById(R.id.imgNotFound);
+        tvNotFound = findViewById(R.id.tvNotFound);
     }
 
     @Override
@@ -115,10 +133,61 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
     }
 
     @Override
+    public void showErrorPanelFromImageIfPermissionGranted(String error) {
+        imgPermissionDenied.setVisibility(View.GONE);
+        tvPermissionDenied.setVisibility(View.GONE);
+        btnTapToChangePermission.setVisibility(View.GONE);
+        lineFromTvTapToChangePermission.setVisibility(View.GONE);
+        imgNotFound.setVisibility(View.VISIBLE);
+        tvNotFound.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorPanelFromImageIfPermissionDenied(String error) {
+        imgNotFound.setVisibility(View.GONE);
+        tvNotFound.setVisibility(View.GONE);
+        imgPermissionDenied.setVisibility(View.VISIBLE);
+        tvPermissionDenied.setVisibility(View.VISIBLE);
+        btnTapToChangePermission.setVisibility(View.VISIBLE);
+        lineFromTvTapToChangePermission.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorPanel() {
+        imgPermissionDenied.setVisibility(View.GONE);
+        tvPermissionDenied.setVisibility(View.GONE);
+        btnTapToChangePermission.setVisibility(View.GONE);
+        lineFromTvTapToChangePermission.setVisibility(View.GONE);
+        imgNotFound.setVisibility(View.GONE);
+        tvNotFound.setVisibility(View.GONE);
+    }
+
+    @Override
     public void setImage(String pathToImage) {
         Glide.with(this)
+                .asBitmap()
                 .load(pathToImage)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .listener(new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Bitmap> target, boolean isFirstResource) {
+                        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                                PackageManager.PERMISSION_GRANTED)
+                            presenter.onLoadImageFailedWithPermissionGranted();
+                        else if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED)
+                            presenter.onLoadImageFailedWithPermissionDenied();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model,
+                                                   Target<Bitmap> target, DataSource dataSource,
+                                                   boolean isFirstResource) {
+                        presenter.onResourceReady();
+                        return false;
+                    }
+                })
                 .into(imgBackdrop);
     }
 

@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListActualNewsRecyclerViewAdapter extends
-        RecyclerView.Adapter<ListActualNewsRecyclerViewAdapter.ViewHolder> {
+        RecyclerView.Adapter<ListActualNewsRecyclerViewAdapter.ActualViewHolder> {
     private List<ApiArticle> apiArticles = new ArrayList<>();
     private MainActivity mainActivity;
 
@@ -43,17 +44,21 @@ public class ListActualNewsRecyclerViewAdapter extends
         notifyDataSetChanged();
     }
 
+    public void clearActualNewsList() {
+        this.apiArticles.clear();
+    }
+
     @NonNull
     @Override
-    public ListActualNewsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                                           int viewType) {
+    public ActualViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                               int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_rv_news, parent, false);
-        return new ViewHolder(view);
+                .inflate(R.layout.item_rv_actual_news, parent, false);
+        return new ActualViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListActualNewsRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull ActualViewHolder holder,
                                  int position) {
         final ApiArticle apiArticle = apiArticles.get(position);
         Glide.with(App.getApp())
@@ -62,9 +67,10 @@ public class ListActualNewsRecyclerViewAdapter extends
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
-                        holder.imgNotFound.setVisibility(View.VISIBLE);
-                        holder.tvNotFound.setVisibility(View.VISIBLE);
-                        holder.progressLoadPhoto.setVisibility(View.GONE);
+                        FrameLayout.LayoutParams layoutParams =
+                                new FrameLayout.LayoutParams(0, 0);
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        holder.cardView.setLayoutParams(layoutParams);
                         return false;
                     }
 
@@ -92,13 +98,13 @@ public class ListActualNewsRecyclerViewAdapter extends
         return apiArticles.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime, tvNotFound;
-        ImageView imgV, imgNotFound;
+    static class ActualViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
+        ImageView imgV;
         ProgressBar progressLoadPhoto;
         CardView cardView;
 
-        ViewHolder(@NonNull View itemView) {
+        ActualViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDesc = itemView.findViewById(R.id.tvDesc);
@@ -107,8 +113,6 @@ public class ListActualNewsRecyclerViewAdapter extends
             tvSource = itemView.findViewById(R.id.tvSource);
             tvTime = itemView.findViewById(R.id.tvTime);
             imgV = itemView.findViewById(R.id.imgV);
-            imgNotFound = itemView.findViewById(R.id.imgNotFound);
-            tvNotFound = itemView.findViewById(R.id.tvNotFound);
             progressLoadPhoto = itemView.findViewById(R.id.progressLoadPhoto);
             cardView = itemView.findViewById(R.id.cardView);
         }

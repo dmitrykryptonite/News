@@ -48,7 +48,7 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
     public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                  int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_rv_news, parent, false);
+                .inflate(R.layout.item_rv_favorite_news, parent, false);
         return new FavoriteViewHolder(view);
 
     }
@@ -63,6 +63,8 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
+                        holder.imgNotFound.setVisibility(View.VISIBLE);
+                        holder.progressLoadPhoto.setVisibility(View.GONE);
                         return false;
                     }
 
@@ -70,6 +72,7 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
                     public boolean onResourceReady(Drawable resource, Object model,
                                                    Target<Drawable> target, DataSource dataSource,
                                                    boolean isFirstResource) {
+                        holder.imgNotFound.setVisibility(View.GONE);
                         holder.progressLoadPhoto.setVisibility(View.GONE);
                         return false;
                     }
@@ -93,7 +96,7 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
 
     static class FavoriteViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
-        ImageView imgV;
+        ImageView imgV, imgNotFound;
         ProgressBar progressLoadPhoto;
         CardView cardView;
 
@@ -106,6 +109,7 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
             tvSource = itemView.findViewById(R.id.tvSource);
             tvTime = itemView.findViewById(R.id.tvTime);
             imgV = itemView.findViewById(R.id.imgV);
+            imgNotFound = itemView.findViewById(R.id.imgNotFound);
             progressLoadPhoto = itemView.findViewById(R.id.progressLoadPhoto);
             cardView = itemView.findViewById(R.id.cardView);
         }

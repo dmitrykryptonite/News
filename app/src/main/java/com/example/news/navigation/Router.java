@@ -3,7 +3,9 @@ package com.example.news.navigation;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 
+import com.example.news.app.App;
 import com.example.news.presentation.view.DetailActualActivity;
 import com.example.news.presentation.view.DetailFavoriteActivity;
 import com.example.news.presentation.view.FavoriteNewsActivity;
@@ -43,5 +45,15 @@ public class Router {
     public void openDetailFavoriteScreen() {
         Intent intent = new Intent(activity, DetailFavoriteActivity.class);
         activity.startActivity(intent);
+    }
+
+    public void openSettingsApp() {
+        Uri packageUri = Uri.fromParts("package", App.getApp().getPackageName(),
+                null);
+        Intent applicationDetailsSettingsIntent = new Intent();
+        applicationDetailsSettingsIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        applicationDetailsSettingsIntent.setData(packageUri);
+        applicationDetailsSettingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(applicationDetailsSettingsIntent);
     }
 }

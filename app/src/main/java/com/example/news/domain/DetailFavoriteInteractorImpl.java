@@ -31,4 +31,9 @@ public class DetailFavoriteInteractorImpl implements DetailFavoriteInteractor {
     public Completable deleteNewsFromFavorites(String title) {
         return mainRepositoryImpl.deleteNewsFromFavorites(title);
     }
+
+    @Override
+    public Completable deleteImageByPath(String pathToImage) {
+        return mainRepositoryImpl.deleteImageByPath(pathToImage);
+    }
 }
