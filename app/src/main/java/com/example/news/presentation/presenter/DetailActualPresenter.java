@@ -33,7 +33,7 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                     getViewState().setTextAppbarSubtitle(apiArticle.getUrl());
                     getViewState().setTextTvDate(Utils.DateFormat(apiArticle.getPublishedAt()));
                     String author = apiArticle.getAuthor();
-                    if(author != null) {
+                    if (author != null) {
                         author = " \u2022 " + author;
                     } else {
                         author = " \u2022 " + "Unknown author";

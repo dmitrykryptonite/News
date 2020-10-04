@@ -41,6 +41,8 @@ public class NetworkConnectionInterceptor implements Interceptor {
                 result = true;
             } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                 result = true;
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                result = true;
             }
         }
         return result;
