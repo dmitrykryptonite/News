@@ -1,5 +1,7 @@
 package com.example.news.presentation.presenter;
 
+import com.example.news.R;
+import com.example.news.app.App;
 import com.example.news.domain.MainInteractorImpl;
 import com.example.news.entities.data.ApiArticle;
 import com.example.news.navigation.Router;
@@ -64,7 +66,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
             isSearchingMode = false;
             getViewState().showPanel(isSearchingMode);
             getViewState().hideKeyboard();
-            getViewState().showWarningMassage("Sorry, query must not be empty");
+            getViewState().showWarningMassage(App.getApp().
+                    getResources().getString(R.string.sorry_query_must_not_be_empty));
         }
     }
 

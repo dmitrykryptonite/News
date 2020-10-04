@@ -2,7 +2,7 @@
     <string name="app_name">News</string>
     <string name="button_search_news">Button: search news</string>
     <string name="search_latest_news" tools:ignore="TypographyEllipsis">
-        Search Latest News...</string>
+        Пошук останніх новин...</string>
     <string name="button_open_favorite_news">Button: open favorite news</string>
     <string name="imgView">imgView</string>
     <string name="image_backdrop">Image: backdrop</string>
@@ -15,11 +15,11 @@
     <string name="image_favorite">Image: favorite</string>
     <string name="favorites">Favorites</string>
     <string name="image_not_found_photo_to_news">Image: not found photo to news</string>
-    <string name="tap_to_change">Tap to change</string>
-    <string name="unknown_author">Unknown author</string>
-    <string name="news_added_to_favorites">News added to favorites</string>
-    <string name="news_deleted_from_favorites">News deleted from favorites</string>
-    <string name="permissions_denied_to_save_pictures">Permissions denied to save pictures</string>
-    <string name="image_not_found">Image not found</string>
-    <string name="sorry_query_must_not_be_empty">Sorry, query must not be empty</string>
+    <string name="tap_to_change">Торкніться, щоб змінити</string>
+    <string name="unknown_author">Невідомий автор</string>
+    <string name="news_added_to_favorites">Новина додана в обране</string>
+    <string name="news_deleted_from_favorites">Новина видалена з обраного</string>
+    <string name="permissions_denied_to_save_pictures">Дозвіл на збереження зображень заборонено</string>
+    <string name="image_not_found">Зображення не знайдено</string>
+    <string name="sorry_query_must_not_be_empty">Вибачте, значення не може бути порожнім</string>
 </resources>

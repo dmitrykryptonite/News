@@ -1,5 +1,7 @@
 package com.example.news.presentation.presenter;
 
+import com.example.news.R;
+import com.example.news.app.App;
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.DetailFavoriteInteractorImpl;
 import com.example.news.entities.FavoriteArticle;
@@ -36,7 +38,7 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
                     if (author != null) {
                         author = " \u2022 " + author;
                     } else {
-                        author = " \u2022 " + "Unknown author";
+                        author = " \u2022 " + R.string.unknown_author;
                     }
                     getViewState().setTextTvBriefInfo(String.format("%s%s",
                             favoriteArticle.getAppbarTitle(), author));
@@ -62,11 +64,12 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
 
     public void onLoadImageFailedWithPermissionDenied() {
         getViewState().showErrorPanelFromImageIfPermissionDenied(
-                "Permissions denied to save pictures");
+                App.getApp().getResources().getString(R.string.permissions_denied_to_save_pictures));
     }
 
     public void onLoadImageFailedWithPermissionGranted() {
-        getViewState().showErrorPanelFromImageIfPermissionGranted("Image not found");
+        getViewState().showErrorPanelFromImageIfPermissionGranted(App.getApp().getResources()
+                .getString(R.string.image_not_found));
     }
 
     public void onResourceReady() {
@@ -88,7 +91,8 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         getViewState().btnAddToFavoriteSetColorYellow();
-                        getViewState().showSuccessMassage("News added to favorites");
+                        getViewState().showSuccessMassage(App.getApp().
+                                getResources().getString(R.string.news_added_to_favorites));
                     }, throwable -> getViewState().showErrorMassage(throwable.getMessage()));
         } else {
             disposableDeleteImageByPath = detailFavoriteInteractorImpl
@@ -102,7 +106,9 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
                                     .subscribe(() -> {
                                         getViewState().btnAddToFavoriteSetColorWhite();
                                         getViewState()
-                                                .showSuccessMassage("News deleted from favorites");
+                                                .showSuccessMassage(App.getApp().
+                                                        getResources()
+                                                        .getString(R.string.news_deleted_from_favorites));
                                     }, throwable -> getViewState()
                                             .showErrorMassage(throwable.getMessage())),
                             throwable -> {
@@ -114,7 +120,9 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
                                         .subscribe(() -> {
                                             getViewState().btnAddToFavoriteSetColorWhite();
                                             getViewState()
-                                                    .showSuccessMassage("News deleted from favorites");
+                                                    .showSuccessMassage(App.getApp().
+                                                            getResources()
+                                                            .getString(R.string.news_deleted_from_favorites));
                                         }, mThrowable -> getViewState()
                                                 .showErrorMassage(mThrowable.getMessage()));
                             });

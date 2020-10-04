@@ -38,9 +38,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical"
                 app:layout_collapseMode="pin">
 
                 <ImageView
@@ -60,12 +57,20 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/bottom_shadow" />
 
+                <View
+                    android:id="@+id/center"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:background="@color/colorPrimary" />
+
                 <ImageView
                     android:id="@+id/imgPermissionDenied"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/center"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="-45dp"
                     android:contentDescription="@string/image_not_found_photo_to_news"
                     android:src="@drawable/ic_image_white"
                     android:visibility="gone" />
@@ -78,6 +83,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="@string/permissions_denied_to_save_pictures"
                     android:textColor="@android:color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -91,6 +97,7 @@
                     android:background="@null"
                     android:text="@string/tap_to_change"
                     android:textColor="@android:color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -109,8 +116,9 @@
                     android:id="@+id/imgNotFound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/center"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="-45dp"
                     android:contentDescription="@string/image_not_found_photo_to_news"
                     android:src="@drawable/ic_image_white"
                     android:visibility="gone" />
@@ -121,8 +129,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgNotFound"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/image_not_found_sorry"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/image_not_found"
                     android:textColor="@android:color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
 

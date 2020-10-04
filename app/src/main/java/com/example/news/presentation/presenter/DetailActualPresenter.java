@@ -1,5 +1,7 @@
 package com.example.news.presentation.presenter;
 
+import com.example.news.R;
+import com.example.news.app.App;
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.DetailActualInteractorImpl;
 import com.example.news.entities.data.ApiArticle;
@@ -36,7 +38,7 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                     if (author != null) {
                         author = " \u2022 " + author;
                     } else {
-                        author = " \u2022 " + "Unknown author";
+                        author = " \u2022 " + R.string.unknown_author;
                     }
                     getViewState().setTextTvBriefInfo(String.format("%s%s • %s",
                             apiArticle.getSource().getName(), author,
@@ -85,7 +87,8 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(() -> {
                                     getViewState().btnAddToFavoriteSetColorYellow();
-                                    getViewState().showSuccessMassage("News added to favorites");
+                                    getViewState().showSuccessMassage(App.getApp().
+                                            getResources().getString(R.string.news_added_to_favorites));
                                 }, throwable -> getViewState()
                                         .showErrorMassage(throwable.getMessage()));
                     });
@@ -100,7 +103,9 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                                     .subscribe(() -> {
                                         getViewState().btnAddToFavoriteSetColorWhite();
                                         getViewState()
-                                                .showSuccessMassage("News deleted from favorites");
+                                                .showSuccessMassage(App.getApp().
+                                                        getResources()
+                                                        .getString(R.string.news_deleted_from_favorites));
                                     }, throwable -> getViewState()
                                             .showErrorMassage(throwable.getMessage())),
                             throwable -> {
@@ -111,7 +116,9 @@ public class DetailActualPresenter extends MvpPresenter<DetailActualView> {
                                         .subscribe(() -> {
                                             getViewState().btnAddToFavoriteSetColorWhite();
                                             getViewState()
-                                                    .showSuccessMassage("News deleted from favorites");
+                                                    .showSuccessMassage(App.getApp().
+                                                            getResources()
+                                                            .getString(R.string.news_deleted_from_favorites));
                                         }, mThrowable -> getViewState()
                                                 .showErrorMassage(mThrowable.getMessage()));
                                 getViewState().showErrorMassage(throwable.getMessage());

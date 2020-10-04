@@ -65,8 +65,8 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="@string/author"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                tools:text="Author" />
 
             <FrameLayout
                 android:id="@+id/layoutDate"
@@ -94,8 +94,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="27dp"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/_01_january_1990"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    tools:text="01 January 1990" />
 
             </FrameLayout>
 
@@ -108,10 +108,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/title"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/tvDesc"
@@ -121,7 +121,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/desc" />
+                tools:text="Desc" />
 
             <TextView
                 android:id="@+id/tvSource"
@@ -136,9 +136,9 @@
                 android:fontFamily="sans-serif-light"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="@string/source"
                 android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Source" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
