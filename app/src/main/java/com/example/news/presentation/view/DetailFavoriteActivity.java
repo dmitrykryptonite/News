@@ -42,7 +42,7 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
     DetailFavoritePresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
-    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle, tvPermissionDenied,
+    private TextView appbarTitle, appbarSubtitle, tvDate, tvBriefInfo, tvTitle, tvPermissionDenied,
             tvNotFound;
     private ImageView imgBackdrop, imgAddToFavorite, imgPermissionDenied, imgNotFound;
     private WebView webView;
@@ -68,7 +68,7 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
         appbarTitle = findViewById(R.id.appbarTitle);
         appbarSubtitle = findViewById(R.id.appbarSubtitle);
         tvDate = findViewById(R.id.tvDate);
-        tvTime = findViewById(R.id.tvTime);
+        tvBriefInfo = findViewById(R.id.tvBriefInfo);
         tvTitle = findViewById(R.id.tvTitle);
         imgBackdrop = findViewById(R.id.imgBackdrop);
         webView = findViewById(R.id.webView);
@@ -123,8 +123,8 @@ public class DetailFavoriteActivity extends MvpAppCompatActivity implements Deta
     }
 
     @Override
-    public void setTextTvTime(String time) {
-        tvTime.setText(time);
+    public void setTextTvBriefInfo(String briefInfo) {
+        tvBriefInfo.setText(briefInfo);
     }
 
     @Override

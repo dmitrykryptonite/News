@@ -15,7 +15,7 @@ public interface DetailFavoriteView extends MvpView {
     void setTextTvDate(String date);
 
     @StateStrategyType(SkipStrategy.class)
-    void setTextTvTime(String time);
+    void setTextTvBriefInfo(String briefInfo);
 
     @StateStrategyType(SkipStrategy.class)
     void setTextTvTitle(String title);

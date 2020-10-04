@@ -84,7 +84,6 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
         holder.tvAuthor.setText(favoriteArticle.getAuthor());
         holder.tvPublishedAt.setText(Utils.DateFormat(favoriteArticle.getDate()));
         holder.tvSource.setText(favoriteArticle.getAppbarTitle());
-        holder.tvTime.setText(String.format("•%s", Utils.DateToTimeFormat(favoriteArticle.getDate())));
         holder.cardView.setOnClickListener(v -> favoriteActivity
                 .openDetailFavoriteScreen(favoriteArticle));
     }
@@ -95,7 +94,7 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
     }
 
     static class FavoriteViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource, tvTime;
+        TextView tvTitle, tvDesc, tvAuthor, tvPublishedAt, tvSource;
         ImageView imgV, imgNotFound;
         ProgressBar progressLoadPhoto;
         CardView cardView;
@@ -107,7 +106,6 @@ public class ListFavoriteNewsRecyclerViewAdapter extends
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvPublishedAt = itemView.findViewById(R.id.tvPublishedAt);
             tvSource = itemView.findViewById(R.id.tvSource);
-            tvTime = itemView.findViewById(R.id.tvTime);
             imgV = itemView.findViewById(R.id.imgV);
             imgNotFound = itemView.findViewById(R.id.imgNotFound);
             progressLoadPhoto = itemView.findViewById(R.id.progressLoadPhoto);

@@ -3,6 +3,7 @@ package com.example.news.data.repository;
 import com.example.news.data.FileManager;
 import com.example.news.data.SharedPreferencesManager;
 import com.example.news.data.api.ApiClient;
+import com.example.news.data.api.LocationClient;
 import com.example.news.data.database.DatabaseNewsManager;
 import com.example.news.data.utils.Utils;
 import com.example.news.domain.MainRepository;
@@ -24,6 +25,7 @@ public class MainRepositoryImpl implements MainRepository {
     private DatabaseNewsManager databaseNewsManager = DatabaseNewsManager.getInstance();
     public Observable<List<FavoriteArticle>> favoriteArticlesUpdateListener =
             databaseNewsManager.favoriteArticlesUpdateListener;
+    private LocationClient locationClient = LocationClient.getInstance();
 
     public static MainRepositoryImpl getInstance() {
         if (instance == null)
@@ -33,7 +35,9 @@ public class MainRepositoryImpl implements MainRepository {
 
     @Override
     public Single<ApiNews> getNews(String apiKey) {
-        return apiClient.getApiInterface().getNews(Utils.getCountry(), Utils.getLanguage(), apiKey);
+        return locationClient.getLocationInterface().getLocation()
+                .flatMap(location -> apiClient.getApiInterface().getNews(location.getCountryCode(),
+                        Utils.getLanguage(), apiKey));
     }
 
     @Override

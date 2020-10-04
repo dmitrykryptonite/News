@@ -15,7 +15,7 @@ public interface DetailActualView extends MvpView {
     void setTextTvDate(String date);
 
     @StateStrategyType(SkipStrategy.class)
-    void setTextTvTime(String time);
+    void setTextTvBriefInfo(String time);
 
     @StateStrategyType(SkipStrategy.class)
     void setTextTvTitle(String title);

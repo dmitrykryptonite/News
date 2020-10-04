@@ -39,7 +39,7 @@ public class Utils {
         return newDate;
     }
 
-    public static String getCountry() {
+    private static String getCountry() {
         Locale locale = Locale.getDefault();
         String country = locale.getCountry();
         return country.toLowerCase();

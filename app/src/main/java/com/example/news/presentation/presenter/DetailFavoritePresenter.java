@@ -33,10 +33,13 @@ public class DetailFavoritePresenter extends MvpPresenter<DetailFavoriteView> {
                     getViewState().setTextAppbarSubtitle(favoriteArticle.getAppbarSubtitle());
                     getViewState().setTextTvDate(Utils.DateFormat(favoriteArticle.getDate()));
                     String author = favoriteArticle.getAuthor();
-                    author = " \u2022" + author;
-                    getViewState().setTextTvTime(String.format("%s%s •%s",
-                            favoriteArticle.getAppbarTitle(), author,
-                            Utils.DateToTimeFormat(favoriteArticle.getDate())));
+                    if(author != null) {
+                        author = " \u2022 " + author;
+                    } else {
+                        author = " \u2022 " + "Unknown author";
+                    }
+                    getViewState().setTextTvBriefInfo(String.format("%s%s",
+                            favoriteArticle.getAppbarTitle(), author ));
                     getViewState().setImage(favoriteArticle.getPathToImage());
                     getViewState().setUrlToWebView(favoriteArticle.getUrl());
                     getViewState().setTextTvTitle(favoriteArticle.getTitle());

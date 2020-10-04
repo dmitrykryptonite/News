@@ -58,14 +58,11 @@
                 android:id="@+id/tvAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_alignStart="@+id/tvTime"
+                android:layout_alignStart="@+id/tvTitle"
                 android:layout_alignTop="@+id/layoutDate"
-                android:layout_alignEnd="@+id/layoutDate"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="160dp"
-                android:drawablePadding="10dp"
+                android:layout_toStartOf="@+id/layoutDate"
                 android:ellipsize="end"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@string/author"
@@ -142,14 +139,6 @@
                 android:text="@string/source"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:textColor="@android:color/white" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

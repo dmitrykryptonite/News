@@ -43,7 +43,7 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     DetailActualPresenter presenter;
     private boolean isHideToolbarView = false;
     private FrameLayout dateBehavior;
-    private TextView appbarTitle, appbarSubtitle, tvDate, tvTime, tvTitle;
+    private TextView appbarTitle, appbarSubtitle, tvDate, tvBriefInfo, tvTitle;
     private ImageView imgBackdrop, imgAddToFavorite;
     private WebView webView;
 
@@ -66,7 +66,7 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
         appbarTitle = findViewById(R.id.appbarTitle);
         appbarSubtitle = findViewById(R.id.appbarSubtitle);
         tvDate = findViewById(R.id.tvDate);
-        tvTime = findViewById(R.id.tvTime);
+        tvBriefInfo = findViewById(R.id.tvBriefInfo);
         tvTitle = findViewById(R.id.tvTitle);
         imgBackdrop = findViewById(R.id.imgBackdrop);
         webView = findViewById(R.id.webView);
@@ -133,8 +133,8 @@ public class DetailActualActivity extends MvpAppCompatActivity implements Detail
     }
 
     @Override
-    public void setTextTvTime(String time) {
-        tvTime.setText(time);
+    public void setTextTvBriefInfo(String briefInfo) {
+        tvBriefInfo.setText(briefInfo);
     }
 
     @Override
